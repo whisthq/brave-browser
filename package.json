@@ -237,13 +237,13 @@
         "dir": "src/brave",
         "branch": "master",
         "repository": {
-          "url": "https://github.com/brave/brave-core.git"
+          "url": "https://github.com/fractal/brave-core.git"
         }
       }
     }
   },
   "dependencies": {
-    "chalk": "4.1.2",
+    "chalk": "^4.1.2",
     "log-update": "4.0.0"
   }
 }

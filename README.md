@@ -1,5 +1,89 @@
-# Brave Browser
+Whist README
+=============
 
+This repository is Whist's fork of `brave-browser`, with a few modifications. We forked `brave-browser` so that we could build Whist integrated within Chromium on top of Brave, to benefit from Brave's features and development pipeline.
+
+## Whist Changelog
+
+Nothing yet! When we make changes, we'll add the list here.
+
+## Development
+
+Before building or modifying the code, you should pull the latest changes from the public [`brave/brave-browser`](https://github.com/brave/brave-browser) repository that this repository is forked from. To setup your repository, follow these steps:
+
+1. Clone and enter the repository
+```
+git clone https://github.com/whisthq/brave-browser && cd brave-browser
+```
+2. Add the upstream repository as a remote
+```
+git remote add upstream https://github.com/brave/brave-browser
+```
+3. Disable pushing to upstream Brave Browser
+```
+git remote set-url --push upstream DISABLE
+```
+
+After this, you should be able to list your remotes with `git remote -v` if you ever need to debug.
+
+Since Brave Browser is a large and active project, we will very often want to work with the latest upstream code; meanwhile, we need to make sure that our own repository has a sane commit history -- we cannot simply periodically merge the latest Brave Browser on top of our own modifications.
+
+Instead, perform the following steps to incorporate changes from upstream:
+
+1. Fetch the latest changes to the `upstream` remote
+```
+git fetch upstream
+```
+2. Rebase on top of your current work
+```
+git rebase upstream/master
+# git rebase upstream/<desired branch> for other upstream branches
+```
+3. Resolve merge conflicts, if any arise, and push to the Whist FFmpeg repository
+```
+git push origin <current branch>
+```
+
+## Building
+
+To see building in action on all OSes, with the flags currently used in production, you can refer to `build-and-publish-ffmpeg.yml`.
+
+### macOS
+
+To build FFmpeg on macOS, first install Homebrew and the FFmpeg dependencies via `brew install x264 ...`. See `build-and-publish.yml` for the full list of dependencies to install.
+
+Then, run `./configure` with the desired flags. See `build-and-publish.yml` for the full list of flags used in production.
+
+To customize the build, run `./configure --help` or read `configure` to see what flags are available. Finally, run `make`. The libraries will be in the `libavcodec`, `libavdevice`, etc. folders.
+
+### Linux Ubuntu 20.04 (via Docker)
+
+To build FFmpeg targeting Linux Ubuntu 20.04 inside of a Docker container, install and setup `docker` on your machine, then run `./docker-build.sh 20.04`. Currently, only Ubuntu 20.04 is supported, via `Dockerfile.20`, for consistency with our infrastructure in `whisthq/whist`.
+
+The built dynamic libraries will appear in the `docker-builds` folder. The Docker build script contains the flags we use when building on Linux, so if you want to build static libraries or enable/disable different components, you must modify `docker-build.sh`. As above, to see what flags are valid, run `./configure --help` or read the `configure` file.
+
+### Windows
+
+We use Media Autobuild Suite to compile FFmpeg on Windows, whose `media-autobuild_suite.bat` file is the equivalent of `./configure && make` on Unix.
+
+First, clone `https://github.com/whisthq/media-autobuild_suite` into `C:\media-autobuild_suite` and `cd` into the folder; our own fork uses our fork of FFmpeg rather than upstream FFmpeg. Then, copy all files except the `.ps1` script in this repository's `.github/workflows/helpers/` to the `build/` directory in `C:\media-autobuild_suite`. You should not need to touch the `.sh` scripts. Configuration is done through `media-autobuild_suite.ini`, `ffmpeg_options.txt`, and `mpv_options.txt`. The `options.txt` files contain compile flags for their respective programs. You should feel free to comment/uncomment flags, and add new ones under the Whist-added options heading, to modify the build settings. Please only enable the minimum required flags, to keep libraries as small as possible. The `.ini` file contains Media Autobuild Suite options. The options in the `.ini` file are documented in `media-autobuild_suite.bat`. Importantly, to build shared or static libraries, you MUST change `ffmpegB2` instead of changing the flags in `ffmpeg_options.txt`.
+
+Then, make sure CUDA is installed. You can install the desired version of CUDA either through the Nvidia website or using the `install_cuda_windows.ps1` script in `.github/workflows/helpers/`. Before running the script, set `$env:cuda` to the desired version you want.
+
+Finally, run `media-autobuild_suite.bat`. The first build will take a while, probably at least an hour, because the batch file also needs to install a lot of packages via `msys2`. The shared libraries will be in `local64/bin-video` and static libraries will be in `local64/lib`.
+
+## Publishing
+
+For every push to `main`, for instance when we pull the latest changes from upstream or if we make changes to FFmpeg and merge to `main`, the shared version of FFmpeg on Windows, macOS and Linux Ubuntu will be built and published to AWS S3, via the GitHub Actions workflow `.github/workflows/build-and-publish-ffmpeg.yml`, from where the Whist protocol retrieves its libraries. The newly-uploaded FFmpeg libraries and headers will be automatically deployed with the next `whisthq/whist` update. Note that not all header files are needed; see the YAML workflow for which ones the Whist Protocol uses. **Only stable changes should make it to `main`.**
+
+See the Changelog above for the list of changes on top of the public version of FFmpeg that are incorporated in our internal Whist version of FFmpeg.
+
+---
+
+
+
+Brave README
+=============
 
 ## Overview
 
@@ -69,6 +153,7 @@ npm config set target_arch arm
 ```
 
 ## Build Brave
+
 The default build type is component.
 
 ```
@@ -104,6 +189,7 @@ npm run build -- Debug
 Brave staff may also want to try [Goma](https://github.com/brave/devops/wiki/Faster-browser-builds#goma) for faster builds.
 
 ## Run Brave
+
 To start the build:
 
 `npm start [Release|Component|Static|Debug]`
@@ -134,11 +220,13 @@ Run `npm run sync brave_core_ref` to checkout the specified _brave-core_ ref and
 ### Scenarios
 
 #### Create a new branch
+
 ```bash
 brave-core> git checkout -b branch_name
 ```
 
 ### Checkout an existing branch or tag
+
 ```bash
 brave-core> git fetch origin
 brave-core> git checkout [-b] branch_name
@@ -149,6 +237,7 @@ brave-core> npm run sync
 ```
 
 ### Update the current branch to latest remote
+
 ```bash
 brave-core> git pull
 brave-core> npm run sync
@@ -158,6 +247,7 @@ brave-core> npm run sync
 ```
 
 #### Reset to latest brave-browser master, and brave-core master (via `init`, will always result in a longer build and will remove any pending changes in your brave-core working directory)
+
 ```bash
 brave-browser> git checkout master
 brave-browser> git pull
@@ -165,6 +255,7 @@ brave-browser> npm run sync -- --init
 ```
 
 #### When you know that DEPS didn't change, but .patch files did (quickest attempt to perform a mini-sync before a build)
+
 ```bash
 brave-core> git checkout featureB
 brave-core> git pull

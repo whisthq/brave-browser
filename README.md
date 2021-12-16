@@ -1,5 +1,4 @@
-Whist README
-=============
+# Whist README
 
 This repository is Whist's fork of `brave-browser`, with a few modifications. We forked `brave-browser` so that we could build Whist integrated within Chromium on top of Brave, to benefit from Brave's features and development pipeline.
 
@@ -12,14 +11,19 @@ Nothing yet! When we make changes, we'll add them to the list here.
 Before building or modifying the code, you should pull the latest changes from the public [`brave/brave-browser`](https://github.com/brave/brave-browser) repository that this repository is forked from. To setup your repository, follow these steps:
 
 1. Clone and enter the repository
+
 ```
 git clone https://github.com/whisthq/brave-browser && cd brave-browser
 ```
+
 2. Add the upstream repository as a remote
+
 ```
 git remote add upstream https://github.com/brave/brave-browser
 ```
+
 3. Disable pushing to upstream Brave Browser
+
 ```
 git remote set-url --push upstream DISABLE
 ```
@@ -31,15 +35,20 @@ Since Brave Browser is a large and active project, we will very often want to wo
 Instead, perform the following steps to incorporate changes from upstream:
 
 1. Fetch the latest changes to the `upstream` remote
+
 ```
 git fetch upstream
 ```
+
 2. Rebase on top of your current work
+
 ```
 git rebase upstream/master
 # git rebase upstream/<desired branch> for other upstream branches
 ```
+
 3. Resolve merge conflicts, if any arise, and push to the Whist FFmpeg repository
+
 ```
 git push origin <current branch>
 ```
@@ -54,22 +63,21 @@ We do not have a pipeline to publish this project in CI. Once we do, we will doc
 
 ---
 
-Brave README
-=============
+# Brave README
 
 ## Overview
 
-This repository holds the build tools needed to build the Brave desktop browser for macOS, Windows, and Linux.  In particular, it fetches and syncs code from the projects we define in `package.json` and `src/brave/DEPS`:
+This repository holds the build tools needed to build the Brave desktop browser for macOS, Windows, and Linux. In particular, it fetches and syncs code from the projects we define in `package.json` and `src/brave/DEPS`:
 
-  - [Chromium](https://chromium.googlesource.com/chromium/src.git)
-    - Fetches code via `depot_tools`.
-    - sets the branch for Chromium (ex: 65.0.3325.181).
-  - [brave-core](https://github.com/brave/brave-core)
-    - Mounted at `src/brave`.
-    - Maintains patches for 3rd party Chromium code.
-  - [adblock-rust](https://github.com/brave/adblock-rust)
-    - Implements Brave's ad-block engine.
-    - Linked through [brave/adblock-rust-ffi](https://github.com/brave/brave-core/tree/master/components/adblock_rust_ffi).
+- [Chromium](https://chromium.googlesource.com/chromium/src.git)
+  - Fetches code via `depot_tools`.
+  - sets the branch for Chromium (ex: 65.0.3325.181).
+- [brave-core](https://github.com/brave/brave-core)
+  - Mounted at `src/brave`.
+  - Maintains patches for 3rd party Chromium code.
+- [adblock-rust](https://github.com/brave/adblock-rust)
+  - Implements Brave's ad-block engine.
+  - Linked through [brave/adblock-rust-ffi](https://github.com/brave/brave-core/tree/master/components/adblock_rust_ffi).
 
 ## Downloads
 
@@ -79,7 +87,7 @@ You can [visit our website](https://brave.com/download) to get the latest stable
 
 For other versions of our browser, please see:
 
-* iOS - [brave/brave-ios](https://github.com/brave/brave-ios)
+- iOS - [brave/brave-ios](https://github.com/brave/brave-ios)
 
 ## Contributing
 
@@ -115,6 +123,7 @@ npm install
 # the Chromium source is downloaded which has a large history
 npm run init
 ```
+
 brave-core based android builds should use `npm run init -- --target_os=android --target_arch=arm` (or whatever cpu type you want to build for)
 
 You can also set the target_os and target_arch for init and build using
@@ -179,12 +188,12 @@ To start the build:
 3. 🔄 Update gclient DEPS dependencies
 4. ⏩ Run hooks (e.g. to perform `npm install` on child projects)
 
-| flag | Description |
-|---|---|
-|`[no flags]`|updates chromium if needed and re-applies patches. If the chromium version did not change it will only re-apply patches that have changed. Will update child dependencies **only if any project needed updating during this script run** <br> **Use this if you want the script to manage keeping you up to date instead of pulling or switching branch manually. **|
-|`--force`|updates both _Chromium_ and _brave-core_ to the latest remote commit for the current brave-core branch and the _Chromium_ ref specified in brave-browser/package.json (e.g. `master` or `74.0.0.103`). Will re-apply all patches. Will force update all child dependencies <br> **Use this if you're having trouble and want to force the branches back to a known state. **|
-|`--init`|force update both _Chromium_ and _brave-core_ to the versions specified in brave-browser/package.json and force updates all dependent repos - same as `npm run init`|
-|`--ignore_chromium`|Will not update the chromium version when applicable. Useful if you want to avoid a minor update when not ready for the larger build time a chromium update may result in. A warning will be output about the current code state expecting a different chromium version. Your build may fail as a result.|
+| flag                | Description                                                                                                                                                                                                                                                                                                                                                                  |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `[no flags]`        | updates chromium if needed and re-applies patches. If the chromium version did not change it will only re-apply patches that have changed. Will update child dependencies **only if any project needed updating during this script run** <br> **Use this if you want the script to manage keeping you up to date instead of pulling or switching branch manually. **         |
+| `--force`           | updates both _Chromium_ and _brave-core_ to the latest remote commit for the current brave-core branch and the _Chromium_ ref specified in brave-browser/package.json (e.g. `master` or `74.0.0.103`). Will re-apply all patches. Will force update all child dependencies <br> **Use this if you're having trouble and want to force the branches back to a known state. ** |
+| `--init`            | force update both _Chromium_ and _brave-core_ to the versions specified in brave-browser/package.json and force updates all dependent repos - same as `npm run init`                                                                                                                                                                                                         |
+| `--ignore_chromium` | Will not update the chromium version when applicable. Useful if you want to avoid a minor update when not ready for the larger build time a chromium update may result in. A warning will be output about the current code state expecting a different chromium version. Your build may fail as a result.                                                                    |
 
 Run `npm run sync brave_core_ref` to checkout the specified _brave-core_ ref and update all dependent repos including chromium if needed
 

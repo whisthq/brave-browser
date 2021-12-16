@@ -5,7 +5,7 @@ This repository is Whist's fork of `brave-browser`, with a few modifications. We
 
 ## Whist Changelog
 
-Nothing yet! When we make changes, we'll add the list here.
+Nothing yet! When we make changes, we'll add them to the list here.
 
 ## Development
 
@@ -46,41 +46,13 @@ git push origin <current branch>
 
 ## Building
 
-To see building in action on all OSes, with the flags currently used in production, you can refer to `build-and-publish-ffmpeg.yml`.
-
-### macOS
-
-To build FFmpeg on macOS, first install Homebrew and the FFmpeg dependencies via `brew install x264 ...`. See `build-and-publish.yml` for the full list of dependencies to install.
-
-Then, run `./configure` with the desired flags. See `build-and-publish.yml` for the full list of flags used in production.
-
-To customize the build, run `./configure --help` or read `configure` to see what flags are available. Finally, run `make`. The libraries will be in the `libavcodec`, `libavdevice`, etc. folders.
-
-### Linux Ubuntu 20.04 (via Docker)
-
-To build FFmpeg targeting Linux Ubuntu 20.04 inside of a Docker container, install and setup `docker` on your machine, then run `./docker-build.sh 20.04`. Currently, only Ubuntu 20.04 is supported, via `Dockerfile.20`, for consistency with our infrastructure in `whisthq/whist`.
-
-The built dynamic libraries will appear in the `docker-builds` folder. The Docker build script contains the flags we use when building on Linux, so if you want to build static libraries or enable/disable different components, you must modify `docker-build.sh`. As above, to see what flags are valid, run `./configure --help` or read the `configure` file.
-
-### Windows
-
-We use Media Autobuild Suite to compile FFmpeg on Windows, whose `media-autobuild_suite.bat` file is the equivalent of `./configure && make` on Unix.
-
-First, clone `https://github.com/whisthq/media-autobuild_suite` into `C:\media-autobuild_suite` and `cd` into the folder; our own fork uses our fork of FFmpeg rather than upstream FFmpeg. Then, copy all files except the `.ps1` script in this repository's `.github/workflows/helpers/` to the `build/` directory in `C:\media-autobuild_suite`. You should not need to touch the `.sh` scripts. Configuration is done through `media-autobuild_suite.ini`, `ffmpeg_options.txt`, and `mpv_options.txt`. The `options.txt` files contain compile flags for their respective programs. You should feel free to comment/uncomment flags, and add new ones under the Whist-added options heading, to modify the build settings. Please only enable the minimum required flags, to keep libraries as small as possible. The `.ini` file contains Media Autobuild Suite options. The options in the `.ini` file are documented in `media-autobuild_suite.bat`. Importantly, to build shared or static libraries, you MUST change `ffmpegB2` instead of changing the flags in `ffmpeg_options.txt`.
-
-Then, make sure CUDA is installed. You can install the desired version of CUDA either through the Nvidia website or using the `install_cuda_windows.ps1` script in `.github/workflows/helpers/`. Before running the script, set `$env:cuda` to the desired version you want.
-
-Finally, run `media-autobuild_suite.bat`. The first build will take a while, probably at least an hour, because the batch file also needs to install a lot of packages via `msys2`. The shared libraries will be in `local64/bin-video` and static libraries will be in `local64/lib`.
+Currently, we don't have a pipeline to build this project in CI. To build this project for development, follow the instructions from the [Build Brave](#build-brave) section below.
 
 ## Publishing
 
-For every push to `main`, for instance when we pull the latest changes from upstream or if we make changes to FFmpeg and merge to `main`, the shared version of FFmpeg on Windows, macOS and Linux Ubuntu will be built and published to AWS S3, via the GitHub Actions workflow `.github/workflows/build-and-publish-ffmpeg.yml`, from where the Whist protocol retrieves its libraries. The newly-uploaded FFmpeg libraries and headers will be automatically deployed with the next `whisthq/whist` update. Note that not all header files are needed; see the YAML workflow for which ones the Whist Protocol uses. **Only stable changes should make it to `main`.**
-
-See the Changelog above for the list of changes on top of the public version of FFmpeg that are incorporated in our internal Whist version of FFmpeg.
+We do not have a pipeline to publish this project in CI. Once we do, we will document it here.
 
 ---
-
-
 
 Brave README
 =============
@@ -213,7 +185,6 @@ To start the build:
 |`--force`|updates both _Chromium_ and _brave-core_ to the latest remote commit for the current brave-core branch and the _Chromium_ ref specified in brave-browser/package.json (e.g. `master` or `74.0.0.103`). Will re-apply all patches. Will force update all child dependencies <br> **Use this if you're having trouble and want to force the branches back to a known state. **|
 |`--init`|force update both _Chromium_ and _brave-core_ to the versions specified in brave-browser/package.json and force updates all dependent repos - same as `npm run init`|
 |`--ignore_chromium`|Will not update the chromium version when applicable. Useful if you want to avoid a minor update when not ready for the larger build time a chromium update may result in. A warning will be output about the current code state expecting a different chromium version. Your build may fail as a result.|
-
 
 Run `npm run sync brave_core_ref` to checkout the specified _brave-core_ ref and update all dependent repos including chromium if needed
 

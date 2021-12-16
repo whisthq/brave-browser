@@ -1,19 +1,83 @@
-# Brave Browser
+# Whist README
 
+This repository is Whist's fork of `brave-browser`, with a few modifications. We forked `brave-browser` so that we could build Whist integrated within Chromium on top of Brave, to benefit from Brave's features and development pipeline.
+
+## Whist Changelog
+
+Nothing yet! When we make changes, we'll add them to the list here.
+
+## Development
+
+Before building or modifying the code, you should pull the latest changes from the public [`brave/brave-browser`](https://github.com/brave/brave-browser) repository that this repository is forked from. To setup your repository, follow these steps:
+
+1. Clone and enter the repository
+
+```
+git clone https://github.com/whisthq/brave-browser && cd brave-browser
+```
+
+2. Add the upstream repository as a remote
+
+```
+git remote add upstream https://github.com/brave/brave-browser
+```
+
+3. Disable pushing to upstream Brave Browser
+
+```
+git remote set-url --push upstream DISABLE
+```
+
+After this, you should be able to list your remotes with `git remote -v` if you ever need to debug.
+
+Since Brave Browser is a large and active project, we will very often want to work with the latest upstream code; meanwhile, we need to make sure that our own repository has a sane commit history -- we cannot simply periodically merge the latest Brave Browser on top of our own modifications.
+
+Instead, perform the following steps to incorporate changes from upstream:
+
+1. Fetch the latest changes to the `upstream` remote
+
+```
+git fetch upstream
+```
+
+2. Rebase on top of your current work
+
+```
+git rebase upstream/master
+# git rebase upstream/<desired branch> for other upstream branches
+```
+
+3. Resolve merge conflicts, if any arise, and push to the Whist FFmpeg repository
+
+```
+git push origin <current branch>
+```
+
+## Building
+
+Currently, we don't have a pipeline to build this project in CI. To build this project for development, follow the instructions from the [Build Brave](#build-brave) section below.
+
+## Publishing
+
+We do not have a pipeline to publish this project in CI. Once we do, we will document it here.
+
+---
+
+# Brave README
 
 ## Overview
 
-This repository holds the build tools needed to build the Brave desktop browser for macOS, Windows, and Linux.  In particular, it fetches and syncs code from the projects we define in `package.json` and `src/brave/DEPS`:
+This repository holds the build tools needed to build the Brave desktop browser for macOS, Windows, and Linux. In particular, it fetches and syncs code from the projects we define in `package.json` and `src/brave/DEPS`:
 
-  - [Chromium](https://chromium.googlesource.com/chromium/src.git)
-    - Fetches code via `depot_tools`.
-    - sets the branch for Chromium (ex: 65.0.3325.181).
-  - [brave-core](https://github.com/brave/brave-core)
-    - Mounted at `src/brave`.
-    - Maintains patches for 3rd party Chromium code.
-  - [adblock-rust](https://github.com/brave/adblock-rust)
-    - Implements Brave's ad-block engine.
-    - Linked through [brave/adblock-rust-ffi](https://github.com/brave/brave-core/tree/master/components/adblock_rust_ffi).
+- [Chromium](https://chromium.googlesource.com/chromium/src.git)
+  - Fetches code via `depot_tools`.
+  - sets the branch for Chromium (ex: 65.0.3325.181).
+- [brave-core](https://github.com/brave/brave-core)
+  - Mounted at `src/brave`.
+  - Maintains patches for 3rd party Chromium code.
+- [adblock-rust](https://github.com/brave/adblock-rust)
+  - Implements Brave's ad-block engine.
+  - Linked through [brave/adblock-rust-ffi](https://github.com/brave/brave-core/tree/master/components/adblock_rust_ffi).
 
 ## Downloads
 
@@ -23,7 +87,7 @@ You can [visit our website](https://brave.com/download) to get the latest stable
 
 For other versions of our browser, please see:
 
-* iOS - [brave/brave-ios](https://github.com/brave/brave-ios)
+- iOS - [brave/brave-ios](https://github.com/brave/brave-ios)
 
 ## Contributing
 
@@ -69,6 +133,7 @@ npm config set target_arch arm
 ```
 
 ## Build Brave
+
 The default build type is component.
 
 ```
@@ -104,6 +169,7 @@ npm run build -- Debug
 Brave staff may also want to try [Goma](https://github.com/brave/devops/wiki/Faster-browser-builds#goma) for faster builds.
 
 ## Run Brave
+
 To start the build:
 
 `npm start [Release|Component|Static|Debug]`
@@ -134,11 +200,13 @@ Run `npm run sync brave_core_ref` to checkout the specified _brave-core_ ref and
 ### Scenarios
 
 #### Create a new branch
+
 ```bash
 brave-core> git checkout -b branch_name
 ```
 
 ### Checkout an existing branch or tag
+
 ```bash
 brave-core> git fetch origin
 brave-core> git checkout [-b] branch_name
@@ -158,6 +226,7 @@ brave-core> npm run sync
 ```
 
 #### Reset to latest brave-browser master, and brave-core master (via `init`, will always result in a longer build and will remove any pending changes in your brave-core working directory)
+
 ```bash
 brave-browser> git checkout master
 brave-browser> git pull
@@ -165,6 +234,7 @@ brave-browser> npm run sync -- --init
 ```
 
 #### When you know that DEPS didn't change, but .patch files did (quickest attempt to perform a mini-sync before a build)
+
 ```bash
 brave-core> git checkout featureB
 brave-core> git pull

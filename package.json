@@ -1,20 +1,24 @@
 {
-  "name": "brave",
+  "name": "whist",
   "version": "1.39.18",
-  "description": "Next generation Brave browser for macOS, Windows, Linux, and eventually Android",
-  "homepage": "https://github.com/fractal/brave-browser#readme",
+  "description": "Whist is a cloud-powered Chromium-based browser, based on Brave.",
+  "homepage": "https://whist.com",
   "bugs": {
-    "url": "https://github.com/fractal/brave-browser/issues"
+    "url": "https://github.com/whisthq/whist/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fractal/brave-browser.git"
+    "url": "git+https://github.com/whisthq/brave-browser.git"
   },
   "license": "MPL-2.0",
   "author": {
-    "name": "Brave Software <support@brave.com>"
+    "name": "Whist Technologies <support@whist.com>"
   },
   "contributors": [
+    {
+      "name": "Brave Software",
+      "email": "support@brave.com"
+    },
     {
       "name": "Cezar Augusto",
       "email": "cezar@brave.com"
@@ -235,9 +239,9 @@
     "projects": {
       "brave_core": {
         "dir": "src/brave",
-        "branch": "master",
+        "branch": "main",
         "repository": {
-          "url": "https://github.com/fractal/brave-core.git"
+          "url": "https://github.com/whisthq/brave-core.git"
         }
       }
     }

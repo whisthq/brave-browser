@@ -14,11 +14,13 @@ cmake-build-debug
 *.sw[a-z]
 *~
 
+# docs
 docs/build
 docs/_build
 node_modules
 src
 
+# gclient
 .cipd
 .gclient_entries
 .gclient
@@ -29,4 +31,5 @@ npm-debug.log
 network_log.json
 network-audit-results.json
 
+# npm
 .npmrc

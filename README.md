@@ -47,7 +47,7 @@ git rebase upstream/master
 # git rebase upstream/<desired branch> for other upstream branches
 ```
 
-3. Resolve merge conflicts, if any arise, and push to the Whist FFmpeg repository
+3. Resolve merge conflicts, if any arise, and push to the Whist Brave Browser repository
 
 ```
 git push origin <current branch>

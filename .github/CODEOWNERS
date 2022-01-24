@@ -12,4 +12,4 @@
 # This should make it easy to add new rules without breaking existing ones.
 
 # Global rule:
-*           @whisthq/code-standard-reviewers @Subtractison @sardination @philippemnoel
+*           @whisthq/code-standard-reviewers @rpadaki @sardination @philippemnoel

@@ -35,15 +35,6 @@ if (checkoutResult === null) {
 // Checkout was successful
 Log.progress(`...brave core is now at commit ID ${braveCoreSha}`)
 
-// Added by Whist
-// Move all the Whist-created patch files to the brave/patches directory, so
-// that they can be applied when brave-core is synced.
-if (process.platform === 'win32') {
-  util.run('move .\\src\\brave\\patches\\* .\\src\\brave\\patches\\') // PHIL TODO: this is untested
-} else {
-  util.run('mv ./src/brave/whist/*.patch ./src/brave/patches/')
-}
-
 let npmCommand = 'npm'
 if (process.platform === 'win32') {
   npmCommand += '.cmd'

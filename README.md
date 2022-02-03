@@ -127,6 +127,10 @@ git clone git@github.com:whisthq/brave-browser.git
 cd brave-browser
 npm install
 
+# If your system is arm64 macOS
+npm config set target_arch arm64
+
+# this takes 30-45 minutes to run
 # the Chromium source is downloaded, which has a large history
 # this might take really long to finish
 

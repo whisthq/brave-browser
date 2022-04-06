@@ -61,6 +61,8 @@ We currently don't have a pipeline to build this project in CI. To build this pr
 
 - If you are building on macOS, you also need to have Xcode fully installed (the application, the CLI tools and Rosetta, if you are on arm64). You can install the application from the macOS App Store, and you can install the CLI tools via `xcode-select --install` in your terminal, once you have the Xcode application. Note that this will require >18GB of available storage. Make sure that the latest Xcode CLI tools are selected when going to Xcode -> Preferences -> Locations.
 
+- You need Python2 installed and configured as `python`. On recent macOS versions, Python2 is no longer bundled with the OS. You can manually install it from [this link](https://www.python.org/downloads/release/python-2718/).
+
 - Lastly, building Brave requires >82GB of available storage. We recommend that you have at least 100GB of available storage on your device before starting to work on Brave/Chromium to avoid any issues.
 
 Once you're ready, simply follow the instructions from the [Build Brave](#build-brave) section below!

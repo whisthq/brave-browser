@@ -4,7 +4,9 @@ This repository is Whist's fork of `brave-browser`, with a few modifications. We
 
 ## Whist Changelog
 
-Nothing yet! When we make changes, we'll add them to the list here.
+- Formatted the upstream repository to be Whist-compatible, and added Dependabot.
+
+- Modified the `package.json` and `init.js` files to add Whist as a project in the Brave Browser and pull [`whisthq/whist`](https://github.com/whisthq/whist) into `src/brave/whist`.
 
 ## Development
 

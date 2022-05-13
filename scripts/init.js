@@ -2,11 +2,12 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
+//
+// Coypright (c) 2022 Whist Technologies, Inc. All rights reserved.
 
 const fs = require('fs')
 const Log = require('../lib/logging')
 const path = require('path')
-const { spawnSync } = require('child_process')
 const util = require('../lib/util')
 
 Log.progress('Performing initial checkout of brave-core')
@@ -25,7 +26,7 @@ if (!fs.existsSync(path.join(braveCoreDir, '.git'))) {
 // the branch for braveCoreRef and doesn't set it to the correct commit
 // for some reason
 const braveCoreSha = util.runGit(braveCoreDir, ['rev-parse', 'HEAD'])
-Log.progress(`Resetting brave core to "${braveCoreSha}"...`)
+Log.progress(`Resetting brave-core to "${braveCoreSha}"...`)
 util.runGit(braveCoreDir, ['reset', '--hard', 'HEAD'], true)
 let checkoutResult = util.runGit(braveCoreDir, ['checkout', braveCoreSha], true)
 // Handle checkout failure
@@ -33,7 +34,39 @@ if (checkoutResult === null) {
   Log.error('Could not checkout: ' + braveCoreSha)
 }
 // Checkout was successful
-Log.progress(`...brave core is now at commit ID ${braveCoreSha}`)
+Log.progress(`...brave-core is now at commit ID ${braveCoreSha}`)
+
+/***************************************************************
+ * Added by Whist 
+ ***************************************************************/ 
+
+Log.progress('Performing initial checkout of whist')
+
+const whistCoreDir = path.resolve(__dirname, '..', 'src', 'brave', 'whist')
+const whistCoreRef = util.getProjectVersion('whist')
+
+if (!fs.existsSync(path.join(whistCoreDir, '.git'))) {
+  Log.status(`Cloning whist [${whistCoreRef}] into ${whistCoreDir}...`)
+  fs.mkdirSync(whistCoreDir)
+  util.runGit(whistCoreDir, ['clone', util.getNPMConfig(['projects', 'whist', 'repository', 'url']), '.'])
+  util.runGit(whistCoreDir, ['checkout', whistCoreRef])
+}
+
+// re-checkout as the `prod` branch, since we only have a `prod` version for brave-browser/brave-core. 
+// Eventually, we could make this checkout per-environment, to test more easily
+const whistCoreSha = util.runGit(whistCoreDir, ['rev-parse', 'HEAD'])
+Log.progress(`Resetting whist to "${whistCoreSha}"...`)
+util.runGit(whistCoreDir, ['checkout', 'prod'], true)
+let whistCheckoutResult = util.runGit(whistCoreDir, ['checkout', whistCoreSha], true)
+// Handle checkout failure
+if (whistCheckoutResult === null) {
+  Log.error('Could not checkout: ' + whistCoreSha)
+}
+// Checkout was successful
+Log.progress(`...whist is now at commit ID ${whistCoreSha}`)
+
+/***************************************************************
+ ***************************************************************/ 
 
 let npmCommand = 'npm'
 if (process.platform === 'win32') {

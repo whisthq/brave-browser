@@ -233,7 +233,8 @@
     "test-security": "cd src/brave && npm run test-security --",
     "test:scripts": "jest lib scripts --passWithNoTests",
     "update_patches": "cd src/brave && npm run update_patches --",
-    "versions": "cd src/brave && npm run versions --"
+    "versions": "cd src/brave && npm run versions --",
+    "package:whist": "cd src/brave && node ./build/commands/scripts/package-whist.js"
   },
   "config": {
     "projects": {
@@ -242,6 +243,13 @@
         "branch": "main",
         "repository": {
           "url": "git@github.com:whisthq/brave-core.git"
+        }
+      },
+      "whist": {
+        "dir": "src/brave/whist",
+        "branch": "prod",
+        "repository": {
+          "url": "git@github.com:whisthq/whist.git"
         }
       }
     }

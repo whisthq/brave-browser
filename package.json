@@ -242,7 +242,7 @@
         "dir": "src/brave",
         "branch": "main",
         "repository": {
-          "url": "git@github.com:whisthq/brave-core.git"
+          "url": "https://github.com/whisthq/brave-core.git"
         }
       },
       "whist": {

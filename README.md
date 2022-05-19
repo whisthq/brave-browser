@@ -134,8 +134,8 @@ npm install
 # If your system is arm64 macOS
 npm config set target_arch arm64
 
-# By default, the `main` branch of whisthq/brave-core will be built. To build a specify branch from
-# brave-core, run the following command (before running `npm run init`)
+# By default, the `main` branch of whisthq/brave-core will be built. To build a specific
+# branch from brave-core, run the following command (before running `npm run init`)
 export npm_config_projects_brave_core_branch=<brave-core-branch-you-want>
 
 # this takes 30-45 minutes to run

@@ -249,7 +249,7 @@
         "dir": "src/brave/whist",
         "branch": "prod",
         "repository": {
-          "url": "git@github.com:whisthq/whist.git"
+          "url": "https://github.com/whisthq/whist.git"
         }
       }
     }

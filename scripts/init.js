@@ -41,9 +41,12 @@ Log.progress('Performing initial checkout of whist')
 const whistCoreDir = path.resolve(__dirname, '..', 'src', 'brave', 'whist')
 const whistCoreRef = util.getProjectVersion('whist')
 
+if (!fs.existsSync(whistCoreDir)) {
+  fs.mkdirSync(whistCoreDir)
+}
+
 if (!fs.existsSync(path.join(whistCoreDir, '.git'))) {
   Log.status(`Cloning whist [${whistCoreRef}] into ${whistCoreDir}...`)
-  fs.mkdirSync(whistCoreDir)
   util.runGit(whistCoreDir, ['clone', util.getNPMConfig(['projects', 'whist', 'repository', 'url']), '.'])
   util.runGit(whistCoreDir, ['checkout', whistCoreRef])
 }

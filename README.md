@@ -156,8 +156,14 @@ The default build type is component.
 
 ```
 # start the component build compile
-npm run build
+npm run build --whist_auth0_client_id=<AUTH0_CLIENT_ID> --whist_auth0_domain_url=<AUTH0_DOMAIN_URL>
 ```
+
+Please refer to the `Chromium Auth` application in the Auth0 dashboard for the client ID and domain URL. At the time of writing, the client ID is `DIy0YQZrMeMO97Thjr13EpkGCy792XWx` and the domain URL is `fractal-dev.us.auth0.com`.
+
+A full build can take many hours. We use Engflow to speed up this up. To build in the cloud, apped the following options `--goma_server_host=humite.goma.engflow.com --brave_use_goma` to the above build script.
+
+The `build` builds not only `brave-core` but also Whist components like the protocol and extension. On subsequent builds where only `brave-core` is being modifieid, you can save some time by running `build_brave` instead of `build`.
 
 To do a release build:
 

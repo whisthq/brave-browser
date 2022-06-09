@@ -163,7 +163,7 @@ Please refer to the `Chromium Auth` application in the Auth0 dashboard for the c
 
 A full build can take many hours. We use Engflow to speed up this up. To build in the cloud, append the following options `--goma_server_host=humite.goma.engflow.com --brave_use_goma` to the above build script.
 
-The `build` builds not only `brave-core` but also Whist components like the protocol and extension. On subsequent builds where only `brave-core` is being modifieid, you can save some time by running `build_brave` instead of `build`.
+The `build` builds not only `brave-core` but also Whist components like the protocol and extension. On subsequent builds where only `brave-core` is being modified, you can save some time by running `build_brave` instead of `build`.
 
 To do a release build:
 

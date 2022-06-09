@@ -152,14 +152,22 @@ npm config set target_arch arm
 
 ## Build Brave
 
-The default build type is component.
+First, set the required Whist environment variables.
+
+```
+export WHIST_AUTH0_CLIENT_ID=<AUTH0_CLIENT_ID> 
+export WHIST_AUTH0_DOMAIN_URL=<AUTH0_DOMAIN_URL>
+export WHIST_AUTH0_REDIRECT_URL=<AUTH0_REDIRECT_URL>
+```
+
+Then, run the build script.
 
 ```
 # start the component build compile
-npm run build --whist_auth0_client_id=<AUTH0_CLIENT_ID> --whist_auth0_domain_url=<AUTH0_DOMAIN_URL>
+npm run build
 ```
 
-Please refer to the `Chromium Auth` application in the Auth0 dashboard for the client ID and domain URL. At the time of writing, the client ID is `DIy0YQZrMeMO97Thjr13EpkGCy792XWx` and the domain URL is `fractal-dev.us.auth0.com`.
+Please refer to the `Chromium Auth` application in the Auth0 dashboard for the client ID and domain URL. At the time of writing, the client ID is `DIy0YQZrMeMO97Thjr13EpkGCy792XWx`, the domain URL is `fractal-dev.us.auth0.com`, and the redirect URL is `https://fractal-dev.us.auth0.com/callback`.
 
 A full build can take many hours. We use Engflow to speed up this up. To build in the cloud, append the following options `--goma_server_host=humite.goma.engflow.com --brave_use_goma` to the above build script.
 

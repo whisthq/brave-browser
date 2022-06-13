@@ -55,7 +55,7 @@ if (!fs.existsSync(path.join(whistCoreDir, '.git'))) {
 // Eventually, we could make this checkout per-environment, to test more easily
 const whistCoreSha = util.runGit(whistCoreDir, ['rev-parse', 'HEAD'])
 Log.progress(`Resetting whist to "${whistCoreSha}"...`)
-util.runGit(whistCoreDir, ['checkout', 'prod'], true)
+util.runGit(whistCoreDir, ['checkout', 'dev'], true)
 let whistCheckoutResult = util.runGit(whistCoreDir, ['checkout', whistCoreSha], true)
 // Handle checkout failure
 if (whistCheckoutResult === null) {

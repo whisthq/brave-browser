@@ -65,7 +65,7 @@ We currently don't have a pipeline to build this project in CI. To build this pr
 
 - You need Python2 installed and configured as `python`. On recent macOS versions, Python2 is no longer bundled with the OS. You can manually install it from [this link](https://www.python.org/downloads/release/python-2718/).
 
-- Lastly, building Brave requires >82GB of available storage. We recommend that you have at least 100GB of available storage on your device before starting to work on Brave/Chromium to avoid any issues.
+- Lastly, building Brave requires ~100GB of available storage. We recommend that you have at least 110GB of available storage on your device before starting to work on Brave/Chromium to avoid any issues.
 
 Once you're ready, simply follow the instructions from the [Build Brave](#build-brave) section below!
 
@@ -131,9 +131,6 @@ git clone git@github.com:whisthq/brave-browser.git
 cd brave-browser
 npm install
 
-# If your system is arm64 macOS
-npm config set target_arch arm64
-
 # By default, the `main` branch of whisthq/brave-core will be built. To build a specific
 # branch from brave-core, run the following command (before running `npm run init`)
 export npm_config_projects_brave_core_branch=<brave-core-branch-you-want>
@@ -152,7 +149,7 @@ npm config set target_arch arm
 
 ## Build Brave
 
-First, set the required Whist environment variables.
+The default build type is Component. We recommend that you use this build type for developing. For the Whist integration to work, you must first set the required Whist environment variables before building:
 
 ```
 export WHIST_AUTH0_CLIENT_ID=<AUTH0_CLIENT_ID> 
@@ -160,18 +157,25 @@ export WHIST_AUTH0_DOMAIN_URL=<AUTH0_DOMAIN_URL>
 export WHIST_AUTH0_REDIRECT_URL=<AUTH0_REDIRECT_URL>
 ```
 
-Then, run the build script.
+Please refer to the `Chromium Auth` application in the Auth0 dashboard for the client ID and domain URL. At the time of writing, the client ID for development is `DIy0YQZrMeMO97Thjr13EpkGCy792XWx`, the domain URL is `fractal-dev.us.auth0.com`, and the redirect URL is `https://fractal-dev.us.auth0.com/callback`.
+
+
+
+Then, run the build script. 
+
+A full build can take many hours. We use Engflow to speed up this up. To build in the cloud, simply use theappend the following options `--goma_server_host=humite.goma.engflow.com --brave_use_goma` to the above build script.
+
 
 ```
-# start the component build compile
+# start the component build compile -- this builds Brave, WhistClient and Whist Extension
 npm run build
+
+# start the component build compile -- this only builds Brave (useful for subsequent builds)
+npm run build_brave
+
+# start the Component build compile in the cloud
+npm run build_goma
 ```
-
-Please refer to the `Chromium Auth` application in the Auth0 dashboard for the client ID and domain URL. At the time of writing, the client ID is `DIy0YQZrMeMO97Thjr13EpkGCy792XWx`, the domain URL is `fractal-dev.us.auth0.com`, and the redirect URL is `https://fractal-dev.us.auth0.com/callback`.
-
-A full build can take many hours. We use Engflow to speed up this up. To build in the cloud, append the following options `--goma_server_host=humite.goma.engflow.com --brave_use_goma` to the above build script.
-
-The `build` builds not only `brave-core` but also Whist components like the protocol and extension. On subsequent builds where only `brave-core` is being modified, you can save some time by running `build_brave` instead of `build`.
 
 To do a release build:
 

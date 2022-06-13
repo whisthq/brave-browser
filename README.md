@@ -65,7 +65,7 @@ We currently don't have a pipeline to build this project in CI. To build this pr
 
 - You need Python2 installed and configured as `python`. On recent macOS versions, Python2 is no longer bundled with the OS. You can manually install it from [this link](https://www.python.org/downloads/release/python-2718/).
 
-- Lastly, building Brave requires >82GB of available storage. We recommend that you have at least 100GB of available storage on your device before starting to work on Brave/Chromium to avoid any issues.
+- Lastly, building Brave requires ~100GB of available storage. We recommend that you have at least 110GB of available storage on your device before starting to work on Brave/Chromium to avoid any issues.
 
 Once you're ready, simply follow the instructions from the [Build Brave](#build-brave) section below!
 
@@ -131,9 +131,6 @@ git clone git@github.com:whisthq/brave-browser.git
 cd brave-browser
 npm install
 
-# If your system is arm64 macOS
-npm config set target_arch arm64
-
 # By default, the `main` branch of whisthq/brave-core will be built. To build a specific
 # branch from brave-core, run the following command (before running `npm run init`)
 export npm_config_projects_brave_core_branch=<brave-core-branch-you-want>
@@ -152,7 +149,19 @@ npm config set target_arch arm
 
 ## Build Brave
 
-The default build type is component.
+The default build type is Component. We recommend that you use this build type for developing. For the Whist integration to work, you must first set the required Whist environment variables before building:
+
+```
+export WHIST_AUTH0_CLIENT_ID=<AUTH0_CLIENT_ID> 
+export WHIST_AUTH0_DOMAIN_URL=<AUTH0_DOMAIN_URL>
+export WHIST_AUTH0_REDIRECT_URL=<AUTH0_REDIRECT_URL>
+```
+
+Please refer to the `Chromium Auth` application in the Auth0 dashboard for the client ID and domain URL. At the time of writing, the client ID for development is `DIy0YQZrMeMO97Thjr13EpkGCy792XWx`, the domain URL is `fractal-dev.us.auth0.com`, and the redirect URL is `https://fractal-dev.us.auth0.com/callback`.
+
+Then, run the build script. The `build` command will build Brave, the WhistClient library and the Whist Extension.
+
+A full build can take many hours. We use Engflow to speed up this up. To build in the cloud, simply substitute `build_goma` instead of `build`. You can also substitute `build_brave` instead of `build` to only build Brave (useful for subsequent builds, to avoid rebuilding Whist-related components).
 
 ```
 # start the component build compile

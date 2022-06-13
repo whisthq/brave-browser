@@ -159,7 +159,9 @@ export WHIST_AUTH0_REDIRECT_URL=<AUTH0_REDIRECT_URL>
 
 Please refer to the `Chromium Auth` application in the Auth0 dashboard for the client ID and domain URL. At the time of writing, the client ID for development is `DIy0YQZrMeMO97Thjr13EpkGCy792XWx`, the domain URL is `fractal-dev.us.auth0.com`, and the redirect URL is `https://fractal-dev.us.auth0.com/callback`.
 
-Then, run the build script. The `build` command will build Brave, the WhistClient library and the Whist Extension. A full build can take many hours. We use Engflow to speed up this up. To build in the cloud, simply use theappend the following options `--brave_use_goma --goma_server_host=humite.goma.engflow.com` to the below build script, or substitute `build_goma` instead of `build`. Lastly, substitute `build_brave` instead of `build` to only build Brave (useful for subsequent builds, to avoid rebuilding Whist-related components).
+Then, run the build script. The `build` command will build Brave, the WhistClient library and the Whist Extension.
+
+A full build can take many hours. We use Engflow to speed up this up. To build in the cloud, simply substitute `build_goma` instead of `build`. You can also substitute `build_brave` instead of `build` to only build Brave (useful for subsequent builds, to avoid rebuilding Whist-related components).
 
 ```
 # start the component build compile

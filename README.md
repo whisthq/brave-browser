@@ -161,8 +161,6 @@ Please refer to the `Chromium Auth` application in the Auth0 dashboard for the c
 
 Then, run the build script. The `build` command will build Brave, the WhistClient library and the Whist Extension.
 
-A full build can take many hours. We use Engflow to speed up this up. To build in the cloud, simply substitute `build_goma` instead of `build`. You can also substitute `build_brave` instead of `build` to only build Brave (useful for subsequent builds, to avoid rebuilding Whist-related components).
-
 ```
 # start the component build compile
 npm run build

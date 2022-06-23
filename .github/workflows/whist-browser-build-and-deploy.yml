@@ -14,7 +14,7 @@ on:
     branches:
       - prod
       - staging
-      - phil/chromium-macos-ci # TODO: FOR TESTING, DELETE ONCE DONE
+      - phil/deploy-pipeline # TODO: FOR TESTING, DELETE ONCE DONE
     paths-ignore:
       - "README.md"
       - "**/README.md"
@@ -33,10 +33,10 @@ jobs:
         config:
           - target_arch: "x86_64"
             target_os: "macOS"
-            runner: macos-11 # We run off of the host GHA machines, but offload the build to EngFlow via Goma
+            runner: "[self-hosted, macOS, ARM64, WeWorkOfficeMacStudio]"
           - target_arch: "arm64"
             target_os: "macOS"
-            runner: macos-11 # We run off of the host GHA machines, but offload the build to EngFlow via Goma
+            runner: "[self-hosted, macOS, ARM64, WeWorkOfficeMacStudio]"
 
     env:
       x64-binary-tar-name: whist-browser-macos-x64.tar.gz

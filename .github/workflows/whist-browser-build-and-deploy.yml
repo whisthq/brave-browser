@@ -55,15 +55,6 @@ jobs:
         working-directory: .github/workflows/helpers
         run: ./notifications/setup_notifications.sh false
 
-      # Since we run on a self-hosted runner on which we have already configured GitHub access (Ming's, since
-      # he uses it as a development machine), we don't need to do anything special here. Otherwise, uncomment
-      # the following lines:
-      # - name: Authenticate with GitHub
-      #   env:
-      #     GH_USERNAME: ${{ secrets.GHA_USERNAME }}
-      #     GH_PAT: ${{ secrets.GHA_PERSONAL_ACCESS_TOKEN }}
-      #   run: git config --global url.https://$GH_USERNAME:$GH_PAT@github.com/.insteadOf https://github.com/
-
       - name: Configure AWS S3 CLI
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -75,11 +66,15 @@ jobs:
       # details, see: https://github.com/whisthq/brave-browser#readme
       - name: Log NodeJS, NPM and Xcode Versions
         run: |
-          echo "Verifying NodeJS & NPM versions (need 16.x and 8.x):\n"
+          echo "Force NodeJS version 16 and NPM version 8.5.0...\n"
+          npm install -g npm@8.5.0
+          nvm use 16
+
+          echo "Verifying NodeJS & NPM versions (need 16.x and 8.5.0)...\n"
           node --version
           npm --version
 
-          echo "Verifying that Xcode is installed and up-to-date (Need 13.x):\n"
+          echo "Verifying that Xcode is installed and up-to-date (Need 13.x)...\n"
           xcodebuild -version
 
       - name: Initialize the Build Environment
@@ -100,7 +95,7 @@ jobs:
       - name: Retrieve Current Whist Browser Version from Config Database
         run: |
           BRANCH_NAME="${GITHUB_REF##*/}"
-          ACCESS_KEY="${{ secrets.HASURA_GRAPHQL_ACCESS_KEY_CONFIG }}"
+          ACCESS_KEY='${{ secrets.HASURA_GRAPHQL_ACCESS_KEY_CONFIG }}'
 
           # curl GraphQL API to retrieve version number from config database
           curl -X POST \

@@ -98,7 +98,7 @@ jobs:
       - name: Retrieve Current Whist Browser Version from Config Database
         run: |
           BRANCH_NAME="${GITHUB_REF##*/}"
-          ACCESS_KEY='${{ secrets.HASURA_GRAPHQL_ACCESS_KEY_CONFIG }}'
+          ACCESS_KEY="${{ secrets.HASURA_GRAPHQL_ACCESS_KEY_CONFIG }}"
 
           # curl GraphQL API to retrieve version number from config database
           curl -X POST \

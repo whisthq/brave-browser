@@ -285,7 +285,7 @@ jobs:
       ###################################################################################
 
       - name: Checkout whisthq/whist Git Repository
-        if: always()
+        if: failure() || success()
         uses: actions/checkout@v2
         with:
           repository: whisthq/whist
@@ -294,7 +294,7 @@ jobs:
           token: ${{ secrets.GHA_PERSONAL_ACCESS_TOKEN }}
 
       - name: Setup Python-based notifications
-        if: always()
+        if: failure() || success()
         working-directory: .github/workflows/helpers
         run: ./notifications/setup_notifications.sh true
 

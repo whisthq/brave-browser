@@ -287,6 +287,11 @@ jobs:
       - name: Checkout whisthq/whist Git Repository
         if: always()
         uses: actions/checkout@v2
+        with:
+          repository: whisthq/whist
+          ref: dev
+          fetch-depth: 1 # Only fetch the latest commit, since the history is large
+          token: ${{ secrets.GHA_PERSONAL_ACCESS_TOKEN }}
 
       - name: Setup Python-based notifications
         if: always()

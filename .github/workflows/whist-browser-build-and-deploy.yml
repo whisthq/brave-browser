@@ -49,7 +49,7 @@ jobs:
 
     steps:
       - name: Checkout Git Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Python Environment
         uses: actions/setup-python@v4.0.0

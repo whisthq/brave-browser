@@ -30,17 +30,15 @@ jobs:
   # and offloading the build to a Goma cluster via EngFlow.
   whist-browser-build-and-deploy:
     name: "Build & Deploy Whist Browser for ${{ matrix.config.target_os }} (${{ matrix.config.target_arch}})"
-    runs-on: ${{ matrix.config.runner }}
+    runs-on: [self-hosted, macOS, ARM64, WeWorkOfficeMacStudio]
 
     strategy:
       matrix:
         config:
           - target_arch: "x86_64"
             target_os: "macOS"
-            runner: [self-hosted, macOS, ARM64, WeWorkOfficeMacStudio]
           - target_arch: "arm64"
             target_os: "macOS"
-            runner: [self-hosted, macOS, ARM64, WeWorkOfficeMacStudio]
 
     env:
       x64-binary-tar-name: whist-browser-macos-x64.tar.gz

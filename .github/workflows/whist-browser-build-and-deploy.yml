@@ -50,17 +50,19 @@ jobs:
     steps:
       - name: Checkout Git Repository
         uses: actions/checkout@v2
-        with:
-          repository: whisthq/brave-browser
-          ref: main
-          fetch-depth: 1 # Only fetch the latest commit, since the history is so large
-          token: ${{ secrets.GHA_PERSONAL_ACCESS_TOKEN }}
 
-      - name: Authenticate with GitHub
-        env:
-          GH_USERNAME: ${{ secrets.GHA_USERNAME }}
-          GH_PAT: ${{ secrets.GHA_PERSONAL_ACCESS_TOKEN }}
-        run: git config --global url.https://$GH_USERNAME:$GH_PAT@github.com/.insteadOf https://github.com/
+      - name: Setup Python-based notifications
+        working-directory: .github/workflows/helpers
+        run: ./notifications/setup_notifications.sh true
+
+      # Since we run on a self-hosted runner on which we have already configured GitHub access (Ming's, since
+      # he uses it as a development machine), we don't need to do anything special here. Otherwise, uncomment
+      # the following lines:
+      # - name: Authenticate with GitHub
+      #   env:
+      #     GH_USERNAME: ${{ secrets.GHA_USERNAME }}
+      #     GH_PAT: ${{ secrets.GHA_PERSONAL_ACCESS_TOKEN }}
+      #   run: git config --global url.https://$GH_USERNAME:$GH_PAT@github.com/.insteadOf https://github.com/
 
       - name: Configure AWS S3 CLI
         uses: aws-actions/configure-aws-credentials@v1
@@ -283,20 +285,6 @@ jobs:
           aws s3 cp "${{ matrix.config.target_arch }}-binary-tar-name" "${{ matrix.config.target_arch }}-s3-bucket-uri/${{ matrix.config.arch }}-binary-tar-name"
 
       ###################################################################################
-
-      - name: Checkout whisthq/whist Git Repository
-        if: failure() || success()
-        uses: actions/checkout@v2
-        with:
-          repository: whisthq/whist
-          ref: dev
-          fetch-depth: 1 # Only fetch the latest commit, since the history is large
-          token: ${{ secrets.GHA_PERSONAL_ACCESS_TOKEN }}
-
-      - name: Setup Python-based notifications
-        if: failure() || success()
-        working-directory: .github/workflows/helpers
-        run: ./notifications/setup_notifications.sh true
 
       - name: Notify Slack on Workflow Error (Only on Push/Workflow_dispatch Events)
         if: failure()

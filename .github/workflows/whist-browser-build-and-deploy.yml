@@ -53,7 +53,7 @@ jobs:
 
       - name: Setup Python-based notifications
         working-directory: .github/workflows/helpers
-        run: ./notifications/setup_notifications.sh true
+        run: ./notifications/setup_notifications.sh false
 
       # Since we run on a self-hosted runner on which we have already configured GitHub access (Ming's, since
       # he uses it as a development machine), we don't need to do anything special here. Otherwise, uncomment

@@ -160,7 +160,7 @@ jobs:
           if [[ "${{ github.event.inputs.target }}" == "prod" ]]; then
             echo 'Using prod configuration...'
             # increment version by 0.0.1
-            NEW_MICRO=$(echo "print( ${MICRO} + 1)" | python)
+            NEW_MICRO=$(echo "print( ${MICRO} + 1)" | python3)
 
             # set new desktop app version
             NEW_VERSION="${MAJOR}.${MINOR}.${NEW_MICRO}"
@@ -172,12 +172,12 @@ jobs:
           elif [[ "${{ github.event.inputs.target }}" == "staging" ]]; then
             echo 'Using staging configuration...'
             # increment version by staging-rc.1
-            NEW_STAGING_RC=$(echo "print( ${STAGING_RC} + 1)" | python)
+            NEW_STAGING_RC=$(echo "print( ${STAGING_RC} + 1)" | python3)
 
             # set temporary variable for upcoming micro version which is 1 ahead of current, since
             # staging/dev are release candiates (rc) for the next version. We don't push that micro
             # version to GraphQL in staging/dev, only on prod when it becomes current
-            UPCOMING_MICRO=$(echo "print( ${MICRO} + 1)" | python)
+            UPCOMING_MICRO=$(echo "print( ${MICRO} + 1)" | python3)
 
             # set new desktop app version
             NEW_VERSION="${MAJOR}.${MINOR}.${UPCOMING_MICRO}-staging-rc.${NEW_STAGING_RC}"
@@ -187,12 +187,12 @@ jobs:
           else
             echo 'Using dev configuration...'
             # increment version by dev-rc.1
-            NEW_DEV_RC=$(echo "print( ${DEV_RC} + 1)" | python)
+            NEW_DEV_RC=$(echo "print( ${DEV_RC} + 1)" | python3)
 
             # set temporary variable for upcoming micro version which is 1 ahead of current, since
             # staging/dev are release candiates (rc) for the next version. We don't push that micro
             # version to GraphQL in staging/dev, only on prod when it becomes current
-            UPCOMING_MICRO=$(echo "print( ${MICRO} + 1)" | python)
+            UPCOMING_MICRO=$(echo "print( ${MICRO} + 1)" | python3)
 
             # set new desktop app version [-x64/-arm64] gets appended depending on the OS architecture it is built on
             NEW_VERSION="${MAJOR}.${MINOR}.${UPCOMING_MICRO}-dev-rc.${NEW_DEV_RC}"

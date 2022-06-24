@@ -12,8 +12,7 @@ on:
   # On staging & prod, we run a build for each promotion (push to branch).
   push:
     branches:
-      - prod
-      - staging
+      - main
       - phil/deploy-pipeline # TODO: FOR TESTING, DELETE ONCE DONE
     paths-ignore:
       - "README.md"

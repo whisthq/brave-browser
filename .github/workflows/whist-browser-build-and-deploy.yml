@@ -66,15 +66,18 @@ jobs:
       # details, see: https://github.com/whisthq/brave-browser#readme
       - name: Log NodeJS, NPM and Xcode Versions
         run: |
-          echo "Force NodeJS version 16 and NPM version 8.5.0...\n"
+          # Source .bashrc file to set up the environment for the build
+          source ~/.bashrc
+
+          echo "Force NodeJS version 16 and NPM version 8.5.0..."
           npm install -g npm@8.5.0
           nvm use 16
 
-          echo "Verifying NodeJS & NPM versions (need 16.x and 8.5.0)...\n"
+          echo "Verifying NodeJS & NPM versions (need 16.x and 8.5.0)..."
           node --version
           npm --version
 
-          echo "Verifying that Xcode is installed and up-to-date (Need 13.x)...\n"
+          echo "Verifying that Xcode is installed and up-to-date (Need 13.x)..."
           xcodebuild -version
 
       - name: Initialize the Build Environment

@@ -184,7 +184,7 @@ jobs:
 
             # store NEW_STAGING_RC in GITHUB_ENV to push to GraphQL API
             echo "new_staging_rc_version=${NEW_STAGING_RC}" >> $GITHUB_ENV
-          elif [[ "${{ github.event.inputs.target }}" == "dev" ]]; then
+          else
             echo 'Using dev configuration...'
             # increment version by dev-rc.1
             NEW_DEV_RC=$(echo "print( ${DEV_RC} + 1)" | python)
@@ -199,8 +199,6 @@ jobs:
 
             # store NEW_DEV_RC in GITHUB_ENV to push to GraphQL API
             echo "new_dev_rc_version=${NEW_DEV_RC}" >> $GITHUB_ENV
-          else
-            echo 'Error: Invalid environment (must be dev, staging, or prod)' && false
           fi
 
           # store new desktop app version as GitHub step output to substitute in GitHub Release tag creation

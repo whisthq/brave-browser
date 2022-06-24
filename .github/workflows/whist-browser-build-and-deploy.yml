@@ -30,7 +30,7 @@ jobs:
   # and offloading the build to a Goma cluster via EngFlow.
   whist-browser-build-and-deploy:
     name: "Build & Deploy Whist Browser for ${{ matrix.config.target_os }} (${{ matrix.config.target_arch}})"
-    runs-on: [self-hosted, macOS, ARM64, WeWorkOfficeMacStudio]
+    runs-on: [self-hosted, macOS, ARM64]
 
     strategy:
       matrix:
@@ -50,9 +50,6 @@ jobs:
     steps:
       - name: Checkout Git Repository
         uses: actions/checkout@v3
-        with:
-          persist-credentials: false
-          token: ${{ secrets.WEWORK_OFFICE_MAC_STUDIO_GHA_PAT }}
 
       - name: Setup Python-based notifications
         working-directory: .github/workflows/helpers

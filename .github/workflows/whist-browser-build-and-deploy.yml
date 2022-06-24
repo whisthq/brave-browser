@@ -64,17 +64,15 @@ jobs:
       s3-bucket-region: us-east-1
 
     steps:
-      - name: Checkout Git Repository
-        uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GHA_PERSONAL_ACCESS_TOKEN }}
-
       # This is necessary since whisthq/brave-browser will pull whisthq/brave-core and whisthq/whist
       - name: Authenticate with GitHub
         env:
           GH_USERNAME: ${{ secrets.GHA_USERNAME }}
           GH_PAT: ${{ secrets.GHA_PERSONAL_ACCESS_TOKEN }}
         run: git config --global url.https://$GH_USERNAME:$GH_PAT@github.com/.insteadOf https://github.com/
+
+      - name: Checkout Git Repository
+        uses: actions/checkout@v3
 
       - name: Setup Python-based notifications
         working-directory: .github/workflows/helpers
@@ -125,7 +123,7 @@ jobs:
           # curl GraphQL API to retrieve version number from config database
           curl -X POST \
           -H "Content-Type: application/json" \
-          -H "X-Hasura-Admin-Secret: ${{ secrets.HASURA_GRAPHQL_ACCESS_KEY_CONFIG }}" \
+          -H "X-Hasura-Admin-Secret: '${{ secrets.HASURA_GRAPHQL_ACCESS_KEY_CONFIG }}'" \
           --data "{ \"query\": \"query { desktop_app_version { major minor micro dev_rc staging_rc } }\" }" \
           https://config-database.whist.com/v1/graphql > response.json
 

@@ -66,6 +66,8 @@ jobs:
     steps:
       - name: Checkout Git Repository
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GHA_PERSONAL_ACCESS_TOKEN }}
 
       # This is necessary since whisthq/brave-browser will pull whisthq/brave-core and whisthq/whist
       - name: Authenticate with GitHub

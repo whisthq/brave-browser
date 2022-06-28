@@ -54,6 +54,12 @@ jobs:
     name: "Build & Deploy Whist Browser for ${{ matrix.config.target_os }} (${{ matrix.config.target_arch}})"
     runs-on: [self-hosted, macOS, ARM64]
 
+
+
+    # TODO: figure out how to reconcile the deploy with the backend, maybe look at how chrome does its deploys
+    # there will also be huge downtime if we do it sequentially, so we need to avoid that
+
+
     strategy:
       matrix:
         config:
@@ -62,6 +68,7 @@ jobs:
           - target_arch: "arm64"
             target_os: "macOS"
 
+    # TODO: Add those buckets to Terraform in whisthq/whist monorepo
     env:
       x64-binary-tar-name: whist-browser-macos-x64.tar.gz
       x64-s3-bucket-uri: s3://whist-browser-macos-x64
@@ -70,16 +77,18 @@ jobs:
       s3-bucket-region: us-east-1
 
     steps:
+      # TODO: Make the macOS runner use the proper keychain
+      - name: Checkout Git Repository
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GHA_PERSONAL_ACCESS_TOKEN }}
+
       - name: Authenticate with GitHub (for pulling the required repositories)
         env:
           GH_USERNAME: ${{ secrets.GHA_USERNAME }}
           GH_PAT: ${{ secrets.GHA_PERSONAL_ACCESS_TOKEN }}
         run: git config --global url.https://$GH_USERNAME:$GH_PAT@github.com/.insteadOf https://github.com/
 
-      - name: Checkout Git Repository
-        uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GHA_PERSONAL_ACCESS_TOKEN }}
 
       - name: Setup Python-based notifications
         working-directory: .github/workflows/helpers
@@ -91,6 +100,41 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_GITHUB_ACTIONS_USER_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_GITHUB_ACTIONS_USER_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.s3-bucket-region }}
+
+
+
+
+      ############################# Windows Configuration Steps START #############################
+
+      - name: Install cmake via Chocolatey on Windows GHA Machine
+        if: runner.os == 'Windows'
+        uses: crazy-max/ghaction-chocolatey@v2
+        with:
+          args: install cmake --pre --no-progress --installargs 'ADD_CMAKE_TO_PATH=System'
+
+      - name: Set up Visual Studio Developer Command Prompt (for nmake)
+        if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1
+
+      #############################################################################################
+      ############################### Unix Configuration Steps START ##############################
+
+      - name: Install macOS Codesigning Certificates on macOS GHA Machine
+        if: runner.os == 'macOS'
+        uses: apple-actions/import-codesign-certs@v1
+        with:
+          p12-file-base64: ${{ secrets.MACOS_SIGNING_P12_CERTIFICATES_BASE64_ENCODED }}
+          p12-password: ${{ secrets.MACOS_SIGNING_P12_CERTIFICATES_BASE64_ENCODED_PASSWORD }}
+
+      # This step follows the specs in https://github.com/electron/electron-notarize#notes-on-jwt-authentication
+      - name: Install macOS Notarization API Key
+        if: runner.os == 'macOS'
+        run: |
+          mkdir -p ~/private_keys
+          aws s3 cp s3://whist-dev-secrets/AuthKey_${{ secrets.APPLE_API_KEY_ID }}.p8 ~/private_keys
+
+
+
 
       # Building Brave/Chromium requires specific Node & npm versions, and Xcode. For full
       # details, see: https://github.com/whisthq/brave-browser#readme
@@ -262,6 +306,13 @@ jobs:
           # npm config set mac_signing_identifier=
           # npm config set mac_installer_signing_identifier=
 
+          # AMPLITUDE_KEY: ${{ secrets.CLIENTAPP_AMPLITUDE_KEY }}
+          # MACOS_ARCH: "${{ matrix.config.arch }}"
+          # # These two environment variables must be set as per https://www.npmjs.com/package/electron-builder-notarize#api-key
+          # APPLE_API_KEY_ID: ${{ secrets.APPLE_API_KEY_ID }}
+          # APPLE_API_KEY_ISSUER_ID: ${{ secrets.APPLE_API_KEY_ISSUER_ID }}
+
+
           # These are all related to Brave rewards/crypto, which we don't care about/cannot use, so 
           # we provide dummy values
           npm config set uphold_client_id=fake
@@ -280,6 +331,45 @@ jobs:
       # Use all 20 Mac Studio threads
       - name: Build Whist Browser
         run: npm run build ${{ env.build_type }} -j 20
+
+
+
+
+        # Each final build has an internal build id and debug id. Sentry will use these
+        # IDs to match the debug symbols with the build that crashed to build the backtrace
+      - name: Copy Client debug symbols to Sentry, on macOS
+        if: runner.os == 'macOS'
+        working-directory: frontend/client-applications
+        env:
+          SENTRY_ORG: whist
+          SENTRY_PROJECT: protocol
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        run: |
+          curl -sL https://sentry.io/get-cli/ | bash
+          sentry-cli upload-dif WhistProtocolClient/build/WhistClient
+          sentry-cli upload-dif WhistProtocolClient/debugSymbols/WhistClient.debug
+
+        # Each final build has an internal build id and debug id. Sentry will use these
+        # IDs to match the debug symbols with the build that crashed to build the backtrace
+      - name: Copy Client debug symbols to Sentry, on Windows
+        if: runner.os == 'Windows'
+        working-directory: frontend/client-applications
+        env:
+          SENTRY_ORG: whist
+          SENTRY_PROJECT: protocol
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        shell: bash --noprofile --norc -eo pipefail {0}
+        run: |
+          # We specify INSTALL_DIR first, so the sentry-cli script doesn't try to call `sudo`
+          export INSTALL_DIR=$GITHUB_WORKSPACE
+          curl -sL https://sentry.io/get-cli/ | bash
+          D:/a/whist/whist/sentry-cli upload-dif WhistProtocolClient/build/WhistClient
+          D:/a/whist/whist/sentry-cli upload-dif WhistProtocolClient/debugSymbols/WhistClient.debug
+
+
+
+
+
 
       - name: Update Config Database Version with the New Version
         run: |
@@ -334,3 +424,83 @@ jobs:
 
     # TODO: Once we fully move off of Electron, we should merge this with the whist-build-and-deploy` workflow,
     # and publish GitHub Tags
+
+
+
+  #######################################################################################
+  #######################################################################################
+
+  # Create GitHub Tag
+  # Create a GitHub Tag when promoting to the `prod` branch
+  # Runs if the entire deployment succeeds and the promotion is running on `prod`
+  whist-create-github-release-tag:
+    name: "Create GitHub Release Tag"
+    runs-on: ubuntu-20.04
+    needs:
+      [
+        whist-publish-build-config,
+        auth0-deploy-rules,
+        terraform-deploy,
+        mandelboxes-publish-ghcr,
+        amis-publish-aws,
+        scaling-service-deploy,
+        client-applications-retrieve-version-number,
+        client-applications-publish-build-s3,
+        client-applications-update-version-number,
+      ]
+    if: needs.whist-publish-build-config.outputs.publish == 'true' && contains(fromJSON('["prod"]'), needs.whist-publish-build-config.outputs.branch)
+    steps:
+      - name: Checkout Git Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python-based notifications
+        working-directory: .github/workflows/helpers
+        run: ./notifications/setup_notifications.sh
+
+      - name: Retrieve Today's Date
+        run: echo "date=$(date)" >> $GITHUB_ENV
+
+      - name: Create GitHub Tag
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ needs.client-applications-retrieve-version-number.outputs.release_version }}
+          body: Whist Production Release on ${{ env.date }}
+          draft: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Notify Slack on Job Success
+        shell: python3 {0}
+        run: |
+          # Retrieve Slack webhook
+          if "prod" in "${{ needs.whist-publish-build-config.outputs.branch }}":
+            SLACK_WEBHOOK = "${{ secrets.SLACK_HOOKS_ENDPOINT_PROD }}"
+          elif "staging" in "${{ needs.whist-publish-build-config.outputs.branch }}":
+            SLACK_WEBHOOK = "${{ secrets.SLACK_HOOKS_ENDPOINT_STAGING }}"
+          else:
+            SLACK_WEBHOOK = "${{ secrets.SLACK_HOOKS_ENDPOINT_DEV }}"
+
+          from notifications.slack_bot import slack_post
+          TITLE = ":github: Whist GitHub Release Completed :github:"
+          BODY = "Deployment of Whist Version `v${{ needs.client-applications-retrieve-version-number.outputs.release_version }}` on branch `${{ needs.whist-publish-build-config.outputs.branch }}` completed - See the generated GitHub Release here: https://github.com/whisthq/whist/releases/tag/v${{ needs.client-applications-retrieve-version-number.outputs.release_version }} (<https://github.com/whisthq/whist/actions/runs/${{ github.run_id }} | see logs>)"
+          slack_post(slack_webhook=SLACK_WEBHOOK, body=BODY, title=TITLE)
+
+      - name: Notify Slack on Job Error
+        if: failure()
+        shell: python3 {0}
+        run: |
+          # Retrieve Slack webhook
+          if "prod" in "${{ needs.whist-publish-build-config.outputs.branch }}":
+            SLACK_WEBHOOK = "${{ secrets.SLACK_HOOKS_ENDPOINT_PROD }}"
+          elif "staging" in "${{ needs.whist-publish-build-config.outputs.branch }}":
+            SLACK_WEBHOOK = "${{ secrets.SLACK_HOOKS_ENDPOINT_STAGING }}"
+          else:
+            SLACK_WEBHOOK = "${{ secrets.SLACK_HOOKS_ENDPOINT_DEV }}"
+
+          from notifications.slack_bot import slack_post
+          BODY = "@releases :rotating_light: Deployment failed: could not create GitHub Release in `whist-create-github-release-tag` job, investigate immediately :rotating_light: (<https://github.com/whisthq/whist/actions/runs/${{ github.run_id }} | see logs>)"
+          slack_post(slack_webhook=SLACK_WEBHOOK, body=BODY)
+
+
+
+

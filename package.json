@@ -218,7 +218,6 @@
     "build": "cd src/brave && npm run build --",
     "build_brave": "cd src/brave && npm run build_brave --",
     "build_whistclient": "cd src/brave && npm run build_whistclient --",
-    "build_goma": "cd src/brave && npm run build --brave_use_goma --goma_server_host=humite.goma.engflow.com --",
     "chromium_rebase_l10n": "cd src/brave && npm run chromium_rebase_l10n --",
     "cibuild": "cd src/brave && npm run cibuild --",
     "create_dist": "cd src/brave && npm run create_dist --",
@@ -243,14 +242,14 @@
     "projects": {
       "brave_core": {
         "dir": "src/brave",
-        "branch": "main",
+        "branch": "dev",
         "repository": {
           "url": "https://github.com/whisthq/brave-core.git"
         }
       },
       "whist": {
         "dir": "src/brave/whist",
-        "branch": "prod",
+        "branch": "dev",
         "repository": {
           "url": "https://github.com/whisthq/whist.git"
         }

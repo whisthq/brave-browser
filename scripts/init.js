@@ -21,14 +21,16 @@ if (!fs.existsSync(path.join(braveCoreDir, '.git'))) {
   util.runGit(braveCoreDir, ['clone', util.getNPMConfig(['projects', 'brave-core', 'repository', 'url']), '.'])
   util.runGit(braveCoreDir, ['checkout', braveCoreRef])
 }
+
 const braveCoreSha = util.runGit(braveCoreDir, ['rev-parse', 'HEAD'])
 Log.progress(`Resetting brave-core to "${braveCoreSha}"...`)
 util.runGit(braveCoreDir, ['reset', '--hard', 'HEAD'], true)
+
 let checkoutResult = util.runGit(braveCoreDir, ['checkout', braveCoreSha], true)
-// Handle checkout failure
 if (checkoutResult === null) {
   Log.error('Could not checkout: ' + braveCoreSha)
 }
+
 // Checkout was successful
 Log.progress(`...brave-core is now at commit ID ${braveCoreSha}`)
 
@@ -41,26 +43,22 @@ Log.progress('Performing initial checkout of whist')
 const whistCoreDir = path.resolve(__dirname, '..', 'src', 'brave', 'whist')
 const whistCoreRef = util.getProjectVersion('whist')
 
-if (!fs.existsSync(whistCoreDir)) {
-  fs.mkdirSync(whistCoreDir)
-}
-
-if (!fs.existsSync(path.join(whistCoreDir, '.git'))) {
+if (!fs.existsSync(whistCoreDir) || !fs.existsSync(path.join(whistCoreDir, '.git'))) {
   Log.status(`Cloning whist [${whistCoreRef}] into ${whistCoreDir}...`)
+  fs.mkdirSync(whistCoreDir)
   util.runGit(whistCoreDir, ['clone', util.getNPMConfig(['projects', 'whist', 'repository', 'url']), '.'])
   util.runGit(whistCoreDir, ['checkout', whistCoreRef])
 }
 
-// re-checkout as the `prod` branch, since we only have a `prod` version for brave-browser/brave-core. 
-// Eventually, we could make this checkout per-environment, to test more easily
 const whistCoreSha = util.runGit(whistCoreDir, ['rev-parse', 'HEAD'])
 Log.progress(`Resetting whist to "${whistCoreSha}"...`)
-util.runGit(whistCoreDir, ['checkout', 'dev'], true)
+util.runGit(whistCoreDir, ['reset', '--hard', 'HEAD'], true)
+
 let whistCheckoutResult = util.runGit(whistCoreDir, ['checkout', whistCoreSha], true)
-// Handle checkout failure
 if (whistCheckoutResult === null) {
   Log.error('Could not checkout: ' + whistCoreSha)
 }
+
 // Checkout was successful
 Log.progress(`...whist is now at commit ID ${whistCoreSha}`)
 

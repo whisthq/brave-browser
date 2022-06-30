@@ -19,33 +19,6 @@ on:
       - "**/README.md"
       - ".github/workflows/README.md"
   workflow_dispatch:
-    inputs:
-      target:
-        type: choice
-        required: true
-        description: |
-          The target deployment environment to which the chosen ref
-          should be deployed. The target deployment environment
-          should be one of "dev", "staging", or "prod". The default
-          target deployment environment is "dev".
-        options:
-          - dev
-          - staging
-          - prod
-        default: dev
-      dry-run:
-        type: boolean
-        description: |
-          A boolean indicating whether or not to perform a dry run
-          deployment. If this boolean is set, code will be built, but
-          not deployed. The default is "true", to avoid accidental
-          deployment mistakes.
-        required: true
-        default: true
-
-concurrency:
-  group: whist-browser-build-and-deploy-${{ github.head_ref || github.run_id }}
-  cancel-in-progress: true
 
 jobs:
   # This job builds the Whist Browser for a specific OS and architecture by starting the build on the GHA machine
@@ -53,13 +26,6 @@ jobs:
   whist-browser-build-and-deploy:
     name: "Build & Deploy Whist Browser for ${{ matrix.config.target_os }} (${{ matrix.config.target_arch}})"
     runs-on: [self-hosted, macOS, ARM64]
-
-
-
-    # TODO: figure out how to reconcile the deploy with the backend, maybe look at how chrome does its deploys
-    # there will also be huge downtime if we do it sequentially, so we need to avoid that
-
-
     strategy:
       matrix:
         config:
@@ -366,36 +332,6 @@ jobs:
           D:/a/whist/whist/sentry-cli upload-dif WhistProtocolClient/build/WhistClient
           D:/a/whist/whist/sentry-cli upload-dif WhistProtocolClient/debugSymbols/WhistClient.debug
 
-
-
-
-
-
-      - name: Update Config Database Version with the New Version
-        run: |
-          ACCESS_KEY='${{ secrets.HASURA_GRAPHQL_ACCESS_KEY_CONFIG }}'
-
-          # curl GraphQL API to set new micro/staging_rc/dev_rc version number and git commit hash in config database
-          if [[ "${{ github.event.inputs.target }}" == "prod" ]]; then
-            curl -X POST \
-            -H "Content-Type: application/json" \
-            -H "X-Hasura-Admin-Secret: $ACCESS_KEY" \
-            --data "{ \"query\": \"mutation { update_desktop_app_version_by_pk(pk_columns: {id: 1}, _set: {micro: ${{ env.new_micro_version }}, staging_rc: ${{ env.new_staging_rc_version }}, dev_rc: ${{ env.new_dev_rc_version }}, prod_commit_hash: \\\"${{ github.sha }}\\\"}) { id } }\" }" \
-            https://config-database.whist.com/v1/graphql
-          elif [[ "${{ github.event.inputs.target }}" == "staging" ]]; then
-            curl -X POST \
-            -H "Content-Type: application/json" \
-            -H "X-Hasura-Admin-Secret: $ACCESS_KEY" \
-            --data "{ \"query\": \"mutation { update_desktop_app_version_by_pk(pk_columns: {id: 1}, _set: {staging_rc: ${{ env.new_staging_rc_version }}, staging_commit_hash: \\\"${{ github.sha }}\\\"}) { id } }\" }" \
-            https://config-database.whist.com/v1/graphql
-          elif [[ "${{ github.event.inputs.target }}" == "dev" ]]; then
-            curl -X POST \
-            -H "Content-Type: application/json" \
-            -H "X-Hasura-Admin-Secret: $ACCESS_KEY" \
-            --data "{ \"query\": \"mutation { update_desktop_app_version_by_pk(pk_columns: {id: 1}, _set: {dev_rc: ${{ env.new_dev_rc_version }}, dev_commit_hash: \\\"${{ github.sha }}\\\"}) { id } }\" }" \
-            https://config-database.whist.com/v1/graphql
-          fi
-
       - name: Tar & Upload Whist Browser to AWS S3
         run: |
           tar -zcvf "${{ matrix.config.target_arch }}-binary-tar-name" "Component_${{ matrix.config.target_arch }}/Brave Browser" "${{ env.build_type }}.app"
@@ -422,85 +358,5 @@ jobs:
           BODY = f"Whist Browser deployed to AWS S3 (<https://github.com/whisthq/whist/actions/runs/${{ github.run_id }} | see logs>)"
           slack_post(slack_webhook=SLACK_WEBHOOK, body=BODY, title=TITLE)
 
-    # TODO: Once we fully move off of Electron, we should merge this with the whist-build-and-deploy` workflow,
-    # and publish GitHub Tags
-
-
-
   #######################################################################################
   #######################################################################################
-
-  # Create GitHub Tag
-  # Create a GitHub Tag when promoting to the `prod` branch
-  # Runs if the entire deployment succeeds and the promotion is running on `prod`
-  whist-create-github-release-tag:
-    name: "Create GitHub Release Tag"
-    runs-on: ubuntu-20.04
-    needs:
-      [
-        whist-publish-build-config,
-        auth0-deploy-rules,
-        terraform-deploy,
-        mandelboxes-publish-ghcr,
-        amis-publish-aws,
-        scaling-service-deploy,
-        client-applications-retrieve-version-number,
-        client-applications-publish-build-s3,
-        client-applications-update-version-number,
-      ]
-    if: needs.whist-publish-build-config.outputs.publish == 'true' && contains(fromJSON('["prod"]'), needs.whist-publish-build-config.outputs.branch)
-    steps:
-      - name: Checkout Git Repository
-        uses: actions/checkout@v3
-
-      - name: Setup Python-based notifications
-        working-directory: .github/workflows/helpers
-        run: ./notifications/setup_notifications.sh
-
-      - name: Retrieve Today's Date
-        run: echo "date=$(date)" >> $GITHUB_ENV
-
-      - name: Create GitHub Tag
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: v${{ needs.client-applications-retrieve-version-number.outputs.release_version }}
-          body: Whist Production Release on ${{ env.date }}
-          draft: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Notify Slack on Job Success
-        shell: python3 {0}
-        run: |
-          # Retrieve Slack webhook
-          if "prod" in "${{ needs.whist-publish-build-config.outputs.branch }}":
-            SLACK_WEBHOOK = "${{ secrets.SLACK_HOOKS_ENDPOINT_PROD }}"
-          elif "staging" in "${{ needs.whist-publish-build-config.outputs.branch }}":
-            SLACK_WEBHOOK = "${{ secrets.SLACK_HOOKS_ENDPOINT_STAGING }}"
-          else:
-            SLACK_WEBHOOK = "${{ secrets.SLACK_HOOKS_ENDPOINT_DEV }}"
-
-          from notifications.slack_bot import slack_post
-          TITLE = ":github: Whist GitHub Release Completed :github:"
-          BODY = "Deployment of Whist Version `v${{ needs.client-applications-retrieve-version-number.outputs.release_version }}` on branch `${{ needs.whist-publish-build-config.outputs.branch }}` completed - See the generated GitHub Release here: https://github.com/whisthq/whist/releases/tag/v${{ needs.client-applications-retrieve-version-number.outputs.release_version }} (<https://github.com/whisthq/whist/actions/runs/${{ github.run_id }} | see logs>)"
-          slack_post(slack_webhook=SLACK_WEBHOOK, body=BODY, title=TITLE)
-
-      - name: Notify Slack on Job Error
-        if: failure()
-        shell: python3 {0}
-        run: |
-          # Retrieve Slack webhook
-          if "prod" in "${{ needs.whist-publish-build-config.outputs.branch }}":
-            SLACK_WEBHOOK = "${{ secrets.SLACK_HOOKS_ENDPOINT_PROD }}"
-          elif "staging" in "${{ needs.whist-publish-build-config.outputs.branch }}":
-            SLACK_WEBHOOK = "${{ secrets.SLACK_HOOKS_ENDPOINT_STAGING }}"
-          else:
-            SLACK_WEBHOOK = "${{ secrets.SLACK_HOOKS_ENDPOINT_DEV }}"
-
-          from notifications.slack_bot import slack_post
-          BODY = "@releases :rotating_light: Deployment failed: could not create GitHub Release in `whist-create-github-release-tag` job, investigate immediately :rotating_light: (<https://github.com/whisthq/whist/actions/runs/${{ github.run_id }} | see logs>)"
-          slack_post(slack_webhook=SLACK_WEBHOOK, body=BODY)
-
-
-
-

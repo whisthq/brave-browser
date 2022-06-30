@@ -57,21 +57,21 @@ git push origin <current branch>
 
 ## Building
 
-We currently don't have a pipeline to build this project in CI. To build this project for local development, first configure your environment for building Brave (Chromium, really): 
+To build Brave, you need:
 
-- You need a NodeJS LTS version to build Brave. As of writing, this is NodeJS 16.x. Note that some build commands might still work if you don't have that version, and things will fail later on with cryptic errors, so it is better to make sure you are on the right version at the start. We recommend that you install Node Version Manager via `brew install nvm` or `apt-get install nvm` to easily manage your NodeJS versions. You can then install a specific version of NodeJS, here `nvm install 16`, and switch to it via `nvm use 16`. 
+- A NodeJS LTS version. As of writing, this is NodeJS 16.x. Note that some build commands might still work if you don't have that version, and things will fail later on with cryptic errors, so it is better to make sure you are on the right version at the start. We recommend that you install Node Version Manager via `brew install nvm` or `apt-get install nvm` to easily manage your NodeJS versions. You can then install a specific version of NodeJS, here `nvm install 16`, and switch to it via `nvm use 16`. 
 
-- If you are building on macOS, you also need to have Xcode fully installed (the application, the CLI tools and Rosetta, if you are on arm64). You can install the application from the macOS App Store, and you can install the CLI tools via `xcode-select --install` in your terminal, once you have the Xcode application. Note that this will require >18GB of available storage. Make sure that the latest Xcode CLI tools are selected when going to Xcode -> Preferences -> Locations.
+- If you are building on macOS, you also need to have Xcode fully installed (the application, the CLI tools, and Rosetta, if you are on arm64). You can install the application from the macOS App Store, and you can install the CLI tools via `xcode-select --install` in your terminal, once you have the Xcode application. You then need to launch Xcode to trigger the Rosetta install. Note that this will require >18GB of available storage.
 
 - You need Python2 installed and configured as `python`. On recent macOS versions, Python2 is no longer bundled with the OS. You can manually install it from [this link](https://www.python.org/downloads/release/python-2718/).
 
-- Lastly, building Brave requires ~100GB of available storage. We recommend that you have at least 110GB of available storage on your device before starting to work on Brave/Chromium to avoid any issues.
+- Lastly, building Brave requires ~100GB of available storage. We recommend that you have at least 120GB of available storage on your device before starting to work on Brave/Chromium to avoid any issues.
 
 Once you're ready, simply follow the instructions from the [Build Brave](#build-brave) section below!
 
 ## Publishing
 
-We do not have a pipeline to publish this project in CI. Once we do, we will document it here.
+This project gets published nightly for our `dev` environment, and for every push on our `staging` and `prod` environments, from the `whist-build-and-deploy.yml` workflow within [`whisthq/whist`](https://github.com/whisthq/whist).
 
 ---
 
@@ -131,16 +131,18 @@ git clone git@github.com:whisthq/brave-browser.git
 cd brave-browser
 npm install
 
-# By default, the `main` branch of whisthq/brave-core will be built. To build a specific
-# branch from brave-core, run the following command (before running `npm run init`)
+# By default, the `dev` branch of whisthq/brave-core and `whisthq/whist` will be built. To build
+# a specific branch simply export the respective environment variable below before running `npm 
+# run init` or `npm run sync`.
 export npm_config_projects_brave_core_branch=<brave-core-branch-you-want>
+export npm_config_projects_whist_branch=<whist-branch-you-want>
 
-# this takes 30-45 minutes to run
-# the Chromium source is downloaded, which has a large history
-# this might take really long to finish
+# This downloads the Chromium source, which has a large history. It might take
+# a really long time to finish the first time you run it (many hours)
 npm run init
 ```
-brave-core based android builds should use `npm run init -- --target_os=android --target_arch=arm` (or whatever CPU type you want to build for). You can also set the target_os and target_arch for init and build using (for Android only! If you run this on macOS/another OS, it will break `npm run build`):
+
+Brave-core based Android builds should use `npm run init -- --target_os=android --target_arch=arm` (or whatever CPU type you want to build for).
 
 ```
 npm config set target_os android
@@ -173,7 +175,7 @@ To do a release build:
 npm run build Release
 ```
 
-brave-core based android builds should use `npm run build -- --target_os=android --target_arch=arm` or set the npm config variables as specified above for `init`
+Brave-core based Android builds should use `npm run build -- --target_os=android --target_arch=arm` or set the npm config variables as specified above for `init`
 
 ### Build Configurations
 

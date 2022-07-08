@@ -157,9 +157,10 @@ The default build type is Component. We recommend that you use this build type f
 export WHIST_AUTH0_CLIENT_ID=<AUTH0_CLIENT_ID> 
 export WHIST_AUTH0_DOMAIN_URL=<AUTH0_DOMAIN_URL>
 export WHIST_AUTH0_REDIRECT_URL=<AUTH0_REDIRECT_URL>
+export SCALING_SERVICE_URL=<SCALING_SERVICE_URL>
 ```
 
-Please refer to the `Chromium Auth` application in the Auth0 dashboard for the client ID and domain URL. At the time of writing, the client ID for development is `DIy0YQZrMeMO97Thjr13EpkGCy792XWx`, the domain URL is `fractal-dev.us.auth0.com`, and the redirect URL is `https://fractal-dev.us.auth0.com/callback`.
+Please refer to the `Chromium Auth` application in the Auth0 dashboard for the client ID and domain URL. At the time of writing, the client ID for development is `DIy0YQZrMeMO97Thjr13EpkGCy792XWx`, the domain URL is `fractal-dev.us.auth0.com`, the redirect URL is `https://fractal-dev.us.auth0.com/callback`, and the scaling-service URL is `https://dev-scaling-service.whist.com`.
 
 Then, run the build script. The `build` command will build Brave, the WhistClient library and the Whist Extension.
 

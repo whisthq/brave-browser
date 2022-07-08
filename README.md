@@ -59,7 +59,7 @@ git push origin <current branch>
 
 To build Brave, you need:
 
-- A NodeJS LTS version. As of writing, this is NodeJS 16.x. Note that some build commands might still work if you don't have that version, and things will fail later on with cryptic errors, so it is better to make sure you are on the right version at the start. We recommend that you install Node Version Manager via `brew install nvm` or `apt-get install nvm` to easily manage your NodeJS versions. You can then install a specific version of NodeJS, here `nvm install 16`, and switch to it via `nvm use 16`. 
+- A NodeJS LTS version. As of writing, this is NodeJS 16.x. Note that some build commands might still work if you don't have that version, and things will fail later on with cryptic errors, so it is better to make sure you are on the right version at the start. We recommend that you install Node Version Manager via `brew install nvm` or `apt-get install nvm` to easily manage your NodeJS versions. You can then install a specific version of NodeJS, here `nvm install 16`, and switch to it via `nvm use 16`.
 
 - If you are building on macOS, you also need to have Xcode fully installed (the application, the CLI tools, and Rosetta, if you are on arm64). You can install the application from the macOS App Store, and you can install the CLI tools via `xcode-select --install` in your terminal, once you have the Xcode application. You then need to launch Xcode to trigger the Rosetta install. Note that this will require >18GB of available storage.
 
@@ -79,7 +79,7 @@ This project gets published nightly for our `dev` environment, and for every pus
 
 ## Overview
 
-This repository holds the build tools needed to build the Brave desktop browser for macOS, Windows, and Linux.  In particular, it fetches and syncs code from the projects defined in `package.json` and `src/brave/DEPS`:
+This repository holds the build tools needed to build the Brave desktop browser for macOS, Windows, and Linux. In particular, it fetches and syncs code from the projects defined in `package.json` and `src/brave/DEPS`:
 
 - [Chromium](https://chromium.googlesource.com/chromium/src.git)
   - Fetches code via `depot_tools`.
@@ -132,7 +132,7 @@ cd brave-browser
 npm install
 
 # By default, the `dev` branch of whisthq/brave-core and `whisthq/whist` will be built. To build
-# a specific branch simply export the respective environment variable below before running `npm 
+# a specific branch simply export the respective environment variable below before running `npm
 # run init` or `npm run sync`.
 export npm_config_projects_brave_core_branch=<brave-core-branch-you-want>
 export npm_config_projects_whist_branch=<whist-branch-you-want>
@@ -154,7 +154,7 @@ npm config set target_arch arm
 The default build type is Component. We recommend that you use this build type for developing. For the Whist integration to work, you must first set the required Whist environment variables before building:
 
 ```
-export WHIST_AUTH0_CLIENT_ID=<AUTH0_CLIENT_ID> 
+export WHIST_AUTH0_CLIENT_ID=<AUTH0_CLIENT_ID>
 export WHIST_AUTH0_DOMAIN_URL=<AUTH0_DOMAIN_URL>
 export WHIST_AUTH0_REDIRECT_URL=<AUTH0_REDIRECT_URL>
 export SCALING_SERVICE_URL=<SCALING_SERVICE_URL>
@@ -215,24 +215,25 @@ To start the build:
 3. 🔄 Update gclient DEPS dependencies
 4. ⏩ Run hooks (e.g. to perform `npm install` on child projects)
 
-| flag | Description |
-|---|---|
-|`[no flags]`|updates chromium if needed and re-applies patches. If the chromium version did not change, it will only re-apply patches that have changed. Will update child dependencies **only if any project needed updating during this script run**. <br> **Use this if you want the script to manage keeping you up to date instead of pulling or switching branches manually. **|
-|`--force`|updates both _Chromium_ and _brave-core_ to the latest remote commit for the current brave-core branch and the _Chromium_ ref specified in brave-browser/package.json (e.g. `master` or `74.0.0.103`). Will re-apply all patches. Will force update all child dependencies. <br> **Use this if you're having trouble and want to force the branches back to a known state. **|
-|`--init`|force update both _Chromium_ and _brave-core_ to the versions specified in brave-browser/package.json and force updates all dependent repos - same as `npm run init`|
-|`--ignore_chromium`|Will not update the chromium version when applicable. Useful if you want to avoid a minor update when not ready for the larger build time a chromium update may result in. A warning will be output about the current code state expecting a different chromium version. Your build may fail as a result.|
-
+| flag                | Description                                                                                                                                                                                                                                                                                                                                                                   |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `[no flags]`        | updates chromium if needed and re-applies patches. If the chromium version did not change, it will only re-apply patches that have changed. Will update child dependencies **only if any project needed updating during this script run**. <br> **Use this if you want the script to manage keeping you up to date instead of pulling or switching branches manually. **      |
+| `--force`           | updates both _Chromium_ and _brave-core_ to the latest remote commit for the current brave-core branch and the _Chromium_ ref specified in brave-browser/package.json (e.g. `master` or `74.0.0.103`). Will re-apply all patches. Will force update all child dependencies. <br> **Use this if you're having trouble and want to force the branches back to a known state. ** |
+| `--init`            | force update both _Chromium_ and _brave-core_ to the versions specified in brave-browser/package.json and force updates all dependent repos - same as `npm run init`                                                                                                                                                                                                          |
+| `--ignore_chromium` | Will not update the chromium version when applicable. Useful if you want to avoid a minor update when not ready for the larger build time a chromium update may result in. A warning will be output about the current code state expecting a different chromium version. Your build may fail as a result.                                                                     |
 
 Run `npm run sync brave_core_ref` to checkout the specified _brave-core_ ref and update all dependent repos including chromium if needed.
 
 ## Scenarios
 
 #### Create a new branch:
+
 ```bash
 brave-core> git checkout -b branch_name
 ```
 
 #### Checkout an existing branch or tag:
+
 ```bash
 brave-core> git fetch origin
 brave-core> git checkout [-b] branch_name
@@ -243,6 +244,7 @@ brave-core> npm run sync
 ```
 
 #### Update the current branch to the latest remote:
+
 ```bash
 brave-core> git pull
 brave-core> npm run sync
@@ -252,6 +254,7 @@ brave-core> npm run sync
 ```
 
 #### Reset to latest brave-browser master and brave-core master (via `init`, will always result in a longer build and will remove any pending changes in your brave-core working directory):
+
 ```bash
 brave-browser> git checkout master
 brave-browser> git pull
@@ -259,6 +262,7 @@ brave-browser> npm run sync -- --init
 ```
 
 #### When you know that DEPS didn't change, but .patch files did (quickest attempt to perform a mini-sync before a build):
+
 ```bash
 brave-core> git checkout featureB
 brave-core> git pull
@@ -271,6 +275,7 @@ brave-browser> npm run apply_patches
 1. **Google Safe Browsing**: Get an API key with SafeBrowsing API enabled from https://console.developers.google.com/. Update the `GOOGLE_API_KEY` environment variable with your key as per https://www.chromium.org/developers/how-tos/api-keys to enable Google SafeBrowsing.
 
 # Development
+
 - Security rules: https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/security/rules.md
 
 # Troubleshooting

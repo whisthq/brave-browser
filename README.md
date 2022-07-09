@@ -61,7 +61,7 @@ To build Brave, you need:
 
 - A NodeJS LTS version. As of writing, this is NodeJS 16.x. Note that some build commands might still work if you don't have that version, and things will fail later on with cryptic errors, so it is better to make sure you are on the right version at the start. We recommend that you install Node Version Manager via `brew install nvm` or `apt-get install nvm` to easily manage your NodeJS versions. You can then install a specific version of NodeJS, here `nvm install 16`, and switch to it via `nvm use 16`. 
 
-- If you are building on macOS, you also need to have Xcode fully installed (the application, the CLI tools, and Rosetta, if you are on arm64). You can install the application from the macOS App Store, and you can install the CLI tools via `xcode-select --install` in your terminal, once you have the Xcode application. You then need to launch Xcode to trigger the Rosetta install. Note that this will require >18GB of available storage.
+- If you are building on macOS, you also need to have Xcode fully installed (the application, the CLI tools, and Rosetta, if you are on arm64). You can install the application from the macOS App Store, and you can install the CLI tools via `xcode-select --install` in your terminal, once you have the Xcode application. You then need to launch Xcode to trigger the Rosetta install. Note that this will require >18GB of available storage. Please ensure Xcode is on the latest version before building, noting that updating Xcode will restart the entire build process.
 
 - You need Python2 installed and configured as `python`. On recent macOS versions, Python2 is no longer bundled with the OS. You can manually install it from [this link](https://www.python.org/downloads/release/python-2718/).
 

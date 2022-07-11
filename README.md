@@ -10,6 +10,8 @@ This repository is Whist's fork of `brave-browser`, with a few modifications. We
 
 ## Development
 
+If you are rebasing on upstream, follow the steps here. For regular development, skip straight to the Building section below.
+
 Before building or modifying the code, you should pull the latest changes from the public [`brave/brave-browser`](https://github.com/brave/brave-browser) repository that this repository is forked from. To setup your repository, follow these steps:
 
 1. Clone and enter the repository

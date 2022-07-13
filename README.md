@@ -2,15 +2,9 @@
 
 This repository is Whist's fork of `brave-browser`, with a few modifications. We forked `brave-browser` so that we could build Whist integrated within Chromium on top of Brave, to benefit from Brave's features and development pipeline.
 
-## Whist Changelog
-
-- Formatted the upstream repository to be Whist-compatible, and added Dependabot.
-
-- Modified the `package.json` and `init.js` files to add Whist as a project in the Brave Browser and pull [`whisthq/whist`](https://github.com/whisthq/whist) into `src/brave/whist`.
-
 ## Development
 
-If you are rebasing on upstream, follow the steps here. For regular development, skip straight to the Building section below.
+If you are rebasing on upstream, follow the steps here. For regular development, skip straight to the [Building](#Building) section below.
 
 Before building or modifying the code, you should pull the latest changes from the public [`brave/brave-browser`](https://github.com/brave/brave-browser) repository that this repository is forked from. To setup your repository, follow these steps:
 
@@ -62,6 +56,8 @@ git push origin <current branch>
 To build Brave, you need:
 
 - A NodeJS LTS version. As of writing, this is NodeJS 16.x. Note that some build commands might still work if you don't have that version, and things will fail later on with cryptic errors, so it is better to make sure you are on the right version at the start. We recommend that you install Node Version Manager via `brew install nvm` or `apt-get install nvm` to easily manage your NodeJS versions. You can then install a specific version of NodeJS, here `nvm install 16`, and switch to it via `nvm use 16`.
+  - To build on macOS, you need NPM 8.5.0
+  - To build on Windows, you need NPM 6.14.0
 
 - If you are building on macOS, you also need to have Xcode fully installed (the application, the CLI tools, and Rosetta, if you are on arm64). You can install the application from the macOS App Store, and you can install the CLI tools via `xcode-select --install` in your terminal, once you have the Xcode application. You then need to launch Xcode to trigger the Rosetta install. Note that this will require >18GB of available storage. Please ensure Xcode is on the latest version before building, noting that updating Xcode will restart the entire build process.
 

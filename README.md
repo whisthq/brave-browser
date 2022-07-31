@@ -55,9 +55,7 @@ git push origin <current branch>
 
 Note that building Whist's Brave also builds the Whist protocol, meaning you also need the dependencies for building it on your system (like Cmake, etc.). Pleaser refer to [whisthq/whist](https://github.com/whisthq/whist) as needed. To build Brave, you need:
 
-- A NodeJS LTS version. As of writing, this is NodeJS 16.x. Note that some build commands might still work if you don't have that version, and things will fail later on with cryptic errors, so it is better to make sure you are on the right version at the start. We recommend that you install Node Version Manager via your system's package manager (Brew, Apt, Chocolatey) to easily manage your NodeJS versions. You can then install a specific version of NodeJS, here `nvm install 16`, and switch to it via `nvm use 16`.
-  - To build on macOS, you need NodeJS 16.x.x (preferrably 16.16.0) and NPM 8.5.0
-  - To build on Windows, you need NodeJS 16.x.x (preferrably 16.16.0) and NPM 8.x.x (preferrably 8.5.5)
+- A NodeJS LTS version. As of writing, this is NodeJS 16.x. Note that some build commands might still work if you don't have that version, and things will fail later on with cryptic errors, so it is better to make sure you are on the right version at the start. We recommend that you install Node Version Manager via your system's package manager (Brew, Apt, Chocolatey/Winget) to easily manage your NodeJS versions. You can then install a specific version of NodeJS, here `nvm install 16`, and switch to it via `nvm use 16`. You *need* to use NPM 8.5.5 to build on macOS, Windows and/or Linux.
 
 - If you are building on macOS, you also need to have Xcode fully installed (the application, the CLI tools, and Rosetta, if you are on arm64). You can install the application from the macOS App Store, and you can install the CLI tools via `xcode-select --install` in your terminal, once you have the Xcode application. You then need to launch Xcode to trigger the Rosetta install. Note that this will require >18GB of available storage. Please ensure Xcode is on the latest version before building, noting that updating Xcode will restart the entire build process.
 

@@ -55,7 +55,7 @@ git push origin <current branch>
 
 Note that building Whist's Brave also builds the Whist protocol, meaning you also need the dependencies for building it on your system (like Cmake, etc.). Pleaser refer to [whisthq/whist](https://github.com/whisthq/whist) as needed. To build Brave, you need:
 
-- A NodeJS LTS version. As of writing, this is NodeJS 16.x. Note that some build commands might still work if you don't have that version, and things will fail later on with cryptic errors, so it is better to make sure you are on the right version at the start. We recommend that you install Node Version Manager via your system's package manager (Brew, Apt, Chocolatey/Winget) to easily manage your NodeJS versions. You can then install a specific version of NodeJS, here `nvm install 16`, and switch to it via `nvm use 16`. You *need* to use NPM 8.5.5 to build on macOS, Windows and/or Linux.
+- A NodeJS LTS version. As of writing, this is NodeJS 16.x. Note that some build commands might still work if you don't have that version, and things will fail later on with cryptic errors, so it is better to make sure you are on the right version at the start. We recommend that you install Node Version Manager via your system's package manager (Brew, Apt, Chocolatey/Winget) to easily manage your NodeJS versions. You can then install a specific version of NodeJS, here `nvm install 16`, and switch to it via `nvm use 16` or `nvm use 16.16.0`. You *need* to use NPM 8.5.5 to build on macOS, Windows and/or Linux, via `npm install -g npm@8.5.5`.
 
 - If you are building on macOS, you also need to have Xcode fully installed (the application, the CLI tools, and Rosetta, if you are on arm64). You can install the application from the macOS App Store, and you can install the CLI tools via `xcode-select --install` in your terminal, once you have the Xcode application. You then need to launch Xcode to trigger the Rosetta install. Note that this will require >18GB of available storage. Please ensure Xcode is on the latest version before building, noting that updating Xcode will restart the entire build process.
 
@@ -63,11 +63,15 @@ Note that building Whist's Brave also builds the Whist protocol, meaning you als
   - On recent macOS versions, Python2 is no longer bundled with the OS. You can manually install it from [this link](https://www.python.org/downloads/release/python-2718/).
   - For Windows, Python 2.7 needs to be at the start of your `PATH`, ahead of any installs of Python.
   
-- If you are building on Windows, you also need Visual Studio 2019 and the Windows 10 SDK.
-  - Visual Studio 2019, inclusing MSVC for v142, ATL for v142 and MFVC for v142
-  - Windows 10 SDK 10.0.20348.02
+- If you are building on Windows, please follow the below instructions:
+  - Install [Visual Studio Community 2019-2022](https://visualstudio.microsoft.com/vs/community/), including Universal Windows Platform development and Desktop development with C++. Try to not install NodeJS, or if you do, ensure that it doesn't conflict with the nvm-installed NodeJS as described above to ensure that you're on the right version.
+  - Install [Windows 10 SDK Version 2104 (10.0.20348.02)](https://developer.microsoft.com/en-us/windows/downloads/sdk-archive/).
+  - Note that you will need 22GB of RAM during `npm run init`. Please [increase your pagefile size](https://www.thewindowsclub.com/increase-page-file-size-virtual-memory-windows). You can decrease / remove the pagefile size modification before `npm run build`, especially if you need the hard drive space.
+  - Note that you may need to enable [LongFilePaths](https://www.howtogeek.com/266621/how-to-make-windows-10-accept-file-paths-over-260-characters/) to compile on Windows. On some Windows installations, LongFilePaths doesn't work, even when the registry is set. If this happens to you, move `brave-browser` to `C:\brave-browser` in order to compile.
+  - Install the Windows dependencies of [Whist Protocol](https://github.com/whisthq/whist/tree/dev/protocol) as well, namely `cmake`, and configure `awscli`.
+  - Note that will you have to use `x86_64 Visual Studio Developer Command Prompt` (which may be named `x64 Visual Studio Developer Command Prompt`), in order to compile Whist, which happens at the end of the `npm run build` step.
 
-- Lastly, building Brave requires ~100GB of available storage. We recommend that you have at least 120GB of available storage on your device before starting to work on Brave/Chromium to avoid any issues.
+- Lastly, building Brave requires ~100GB of available storage for a Component or Debug build, and ~150GB for a Release build. We recommend that you have at least 120GB of available storage on your device before starting to work on Brave/Chromium to avoid any issues.
 
 Once you're ready, simply follow the instructions from the [Build Brave](#build-brave) section below!
 
@@ -144,6 +148,8 @@ export npm_config_projects_whist_branch=<whist-branch-you-want>
 npm run init
 ```
 
+Use `set` instead of `export` if using the x64 Visual Studio Developer Command Prompt.
+
 Brave-core based Android builds should use `npm run init -- --target_os=android --target_arch=arm` (or whatever CPU type you want to build for).
 
 ```
@@ -156,10 +162,17 @@ npm config set target_arch arm
 The default build type is Component. We recommend that you use this build type for developing. For the Whist integration to work, you must first set the required Whist environment variables before building:
 
 ```
+# bash
 export WHIST_AUTH0_CLIENT_ID=<AUTH0_CLIENT_ID>
 export WHIST_AUTH0_DOMAIN_URL=<AUTH0_DOMAIN_URL>
 export WHIST_AUTH0_REDIRECT_URL=<AUTH0_REDIRECT_URL>
 export SCALING_SERVICE_URL=<SCALING_SERVICE_URL>
+
+# x64 Visual Studio Developer Command Prompt
+set WHIST_AUTH0_CLIENT_ID=<AUTH0_CLIENT_ID>
+set WHIST_AUTH0_DOMAIN_URL=<AUTH0_DOMAIN_URL>
+set WHIST_AUTH0_REDIRECT_URL=<AUTH0_REDIRECT_URL>
+set SCALING_SERVICE_URL=<SCALING_SERVICE_URL>
 ```
 
 Please refer to the `Chromium Auth` application in the Auth0 dashboard for the client ID and domain URL. At the time of writing, the client ID for development is `DIy0YQZrMeMO97Thjr13EpkGCy792XWx`, the domain URL is `fractal-dev.us.auth0.com`, the redirect URL is `https://fractal-dev.us.auth0.com/callback`, and the scaling-service URL is `https://dev-scaling-service.whist.com`.

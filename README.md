@@ -63,15 +63,15 @@ Note that building Whist's Brave also builds the Whist protocol, meaning you als
   - On recent macOS versions, Python2 is no longer bundled with the OS. You can manually install it from [this link](https://www.python.org/downloads/release/python-2718/).
   - For Windows, Python 2.7 needs to be at the start of your `PATH`, ahead of any installs of Python.
   
-- If you are building on Windows, please follow the below instructions
-  - Install [Visual Studio Community 2019-2022](https://visualstudio.microsoft.com/vs/community/), including Universal Windows Platform development and Desktop development with C++. Try to not install NodeJS, or if you do, ensure that it doesn't conflict with the nvm-installed nodejs as described above.
-  - Install [Windows 10 SDK Version 2104 (10.0.20348.02)](https://developer.microsoft.com/en-us/windows/downloads/sdk-archive/)
-  - Note that you will need 22GB of RAM during `npm run init`. Please [increase your pagefile size](https://www.thewindowsclub.com/increase-page-file-size-virtual-memory-windows). You can decrease / remove that before `npm run build`, especially if you need the hard drive space.
-  - Note that you may need to enable [LongFilePaths](https://www.howtogeek.com/266621/how-to-make-windows-10-accept-file-paths-over-260-characters/) to compile on windows. On some Windows installs, LongFilePaths doesn't work, even when the registry is set. If this happens to you, move `brave-browser` to `C:\brave-browser` in order to compile.
-  - Install Windows dependencies of [Whist Protocol](https://github.com/whisthq/whist/tree/dev/protocol) as well, namely cmake and configured awscli.
-  - Note that will you have to use `x86_64 Visual Studio Developer Command Prompt` (Which may be named `x64 Visual Studio Developer Command Prompt`), in order to compile Whist, which happens in the `npm run build` step.
+- If you are building on Windows, please follow the below instructions:
+  - Install [Visual Studio Community 2019-2022](https://visualstudio.microsoft.com/vs/community/), including Universal Windows Platform development and Desktop development with C++. Try to not install NodeJS, or if you do, ensure that it doesn't conflict with the nvm-installed NodeJS as described above to ensure that you're on the right version.
+  - Install [Windows 10 SDK Version 2104 (10.0.20348.02)](https://developer.microsoft.com/en-us/windows/downloads/sdk-archive/).
+  - Note that you will need 22GB of RAM during `npm run init`. Please [increase your pagefile size](https://www.thewindowsclub.com/increase-page-file-size-virtual-memory-windows). You can decrease / remove the pagefile size modification before `npm run build`, especially if you need the hard drive space.
+  - Note that you may need to enable [LongFilePaths](https://www.howtogeek.com/266621/how-to-make-windows-10-accept-file-paths-over-260-characters/) to compile on Windows. On some Windows installations, LongFilePaths doesn't work, even when the registry is set. If this happens to you, move `brave-browser` to `C:\brave-browser` in order to compile.
+  - Install the Windows dependencies of [Whist Protocol](https://github.com/whisthq/whist/tree/dev/protocol) as well, namely `cmake`, and configure `awscli`.
+  - Note that will you have to use `x86_64 Visual Studio Developer Command Prompt` (which may be named `x64 Visual Studio Developer Command Prompt`), in order to compile Whist, which happens at the end of the `npm run build` step.
 
-- Lastly, building Brave requires ~100GB of available storage. We recommend that you have at least 120GB of available storage on your device before starting to work on Brave/Chromium to avoid any issues.
+- Lastly, building Brave requires ~100GB of available storage for a Component or Debug build, and ~150GB for a Release build. We recommend that you have at least 120GB of available storage on your device before starting to work on Brave/Chromium to avoid any issues.
 
 Once you're ready, simply follow the instructions from the [Build Brave](#build-brave) section below!
 

@@ -161,16 +161,14 @@ npm config set target_arch arm
 
 The default build type is Component. We recommend that you use this build type for developing. For the Whist integration to work, you must first set the required Whist environment variables before building:
 
-Bash
 ```
+# bash
 export WHIST_AUTH0_CLIENT_ID=<AUTH0_CLIENT_ID>
 export WHIST_AUTH0_DOMAIN_URL=<AUTH0_DOMAIN_URL>
 export WHIST_AUTH0_REDIRECT_URL=<AUTH0_REDIRECT_URL>
 export SCALING_SERVICE_URL=<SCALING_SERVICE_URL>
-```
 
-x64 Visual Studio Developer Command Prompt
-```
+# x64 Visual Studio Developer Command Prompt
 set WHIST_AUTH0_CLIENT_ID=<AUTH0_CLIENT_ID>
 set WHIST_AUTH0_DOMAIN_URL=<AUTH0_DOMAIN_URL>
 set WHIST_AUTH0_REDIRECT_URL=<AUTH0_REDIRECT_URL>

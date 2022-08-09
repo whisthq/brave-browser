@@ -59,10 +59,6 @@ Note that building Whist's Brave also builds the Whist protocol, meaning you als
 
 - If you are building on macOS, you also need to have Xcode fully installed (the application, the CLI tools, and Rosetta, if you are on arm64). You can install the application from the macOS App Store, and you can install the CLI tools via `xcode-select --install` in your terminal, once you have the Xcode application. You then need to launch Xcode to trigger the Rosetta install. Note that this will require >18GB of available storage. Please ensure Xcode is on the latest version before building, noting that updating Xcode will restart the entire build process.
 
-- You need Python2 installed and configured as `python` as part of your `PATH`.
-  - On recent macOS versions, Python2 is no longer bundled with the OS. You can manually install it from [this link](https://www.python.org/downloads/release/python-2718/).
-  - For Windows, Python 2.7 needs to be at the start of your `PATH`, ahead of any installs of Python.
-  
 - If you are building on Windows, please follow the below instructions:
   - Install [Visual Studio Community 2019-2022](https://visualstudio.microsoft.com/vs/community/), including Universal Windows Platform development and Desktop development with C++. Try to not install NodeJS, or if you do, ensure that it doesn't conflict with the nvm-installed NodeJS as described above to ensure that you're on the right version.
   - Install [Windows 10 SDK Version 2104 (10.0.20348.02)](https://developer.microsoft.com/en-us/windows/downloads/sdk-archive/).

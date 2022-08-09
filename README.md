@@ -174,7 +174,7 @@ set WHIST_SCALING_SERVICE_URL=<SCALING_SERVICE_URL>
 If you are planning to test locally against your own development instance, you'll also want to set `WHIST_HOST_IP`. Please refer to the `Chromium Auth` application in the Auth0 dashboard for the client ID and domain URL, within a specific Auth0 tenant. At the time of writing, the values you need to pass to connect against our `dev` environment are:
   - Client ID: `DIy0YQZrMeMO97Thjr13EpkGCy792XWx`
   - Domain URL: `fractal-dev.us.auth0.com`
-  - Redirect URL: `https://fractal-dev.us.auth0.com/callback`,
+  - Redirect URL: `https://fractal-dev.us.auth0.com/callback`
   - Scaling-Service URL: `https://dev-scaling-service.whist.com`
 
 Then, run the build script. The `build` command will build Brave, the WhistClient library and the Whist Extension.

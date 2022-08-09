@@ -162,16 +162,20 @@ The default build type is Component. We recommend that you use this build type f
 export WHIST_AUTH0_CLIENT_ID=<AUTH0_CLIENT_ID>
 export WHIST_AUTH0_DOMAIN_URL=<AUTH0_DOMAIN_URL>
 export WHIST_AUTH0_REDIRECT_URL=<AUTH0_REDIRECT_URL>
-export SCALING_SERVICE_URL=<SCALING_SERVICE_URL>
+export WHIST_SCALING_SERVICE_URL=<SCALING_SERVICE_URL>
 
 # x64 Visual Studio Developer Command Prompt
 set WHIST_AUTH0_CLIENT_ID=<AUTH0_CLIENT_ID>
 set WHIST_AUTH0_DOMAIN_URL=<AUTH0_DOMAIN_URL>
 set WHIST_AUTH0_REDIRECT_URL=<AUTH0_REDIRECT_URL>
-set SCALING_SERVICE_URL=<SCALING_SERVICE_URL>
+set WHIST_SCALING_SERVICE_URL=<SCALING_SERVICE_URL>
 ```
 
-Please refer to the `Chromium Auth` application in the Auth0 dashboard for the client ID and domain URL. At the time of writing, the client ID for development is `DIy0YQZrMeMO97Thjr13EpkGCy792XWx`, the domain URL is `fractal-dev.us.auth0.com`, the redirect URL is `https://fractal-dev.us.auth0.com/callback`, and the scaling-service URL is `https://dev-scaling-service.whist.com`.
+If you are planning to test locally against your own development instance, you'll also want to set `WHIST_HOST_IP`. Please refer to the `Chromium Auth` application in the Auth0 dashboard for the client ID and domain URL, within a specific Auth0 tenant. At the time of writing, the values you need to pass to connect against our `dev` environment are:
+  - Client ID: `DIy0YQZrMeMO97Thjr13EpkGCy792XWx`
+  - Domain URL: `fractal-dev.us.auth0.com`
+  - Redirect URL: `https://fractal-dev.us.auth0.com/callback`,
+  - Scaling-Service URL: `https://dev-scaling-service.whist.com`
 
 Then, run the build script. The `build` command will build Brave, the WhistClient library and the Whist Extension.
 

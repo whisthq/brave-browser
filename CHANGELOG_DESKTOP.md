@@ -1,5 +1,62 @@
 # Changelog
 
+## [1.40.113](https://github.com/brave/brave-browser/releases/tag/v1.40.113)
+
+ - Upgraded Chromium to 103.0.5060.114. ([#23860](https://github.com/brave/brave-browser/issues/23860)) ([Changelog for 103.0.5060.114](https://chromium.googlesource.com/chromium/src/+log/103.0.5060.66..103.0.5060.114?pretty=fuller&n=1000))
+
+## [1.40.109](https://github.com/brave/brave-browser/releases/tag/v1.40.109)
+
+ - Upgraded Chromium to 103.0.5060.66 on Windows. ([#23707](https://github.com/brave/brave-browser/issues/23707)) ([Changelog for 103.0.5060.66](https://chromium.googlesource.com/chromium/src/+log/103.0.5060.53..103.0.5060.66?pretty=fuller&n=1000))
+
+## [1.40.107](https://github.com/brave/brave-browser/releases/tag/v1.40.107)
+
+ - Temporarily disabled Language/Font fingerprinting due to fonts being incorrectly displayed on various websites. ([#23093](https://github.com/brave/brave-browser/issues/23093))
+ - Fixed new tab button using incorrect background color. ([#23423](https://github.com/brave/brave-browser/issues/23423))
+ - Fixed unlimited token allowance incorrectly being displayed in transaction history. ([#23562](https://github.com/brave/brave-browser/issues/23562))
+
+## [1.40.105](https://github.com/brave/brave-browser/releases/tag/v1.40.105)
+
+ - Added Filecoin to Brave Wallet. ([#23169](https://github.com/brave/brave-browser/issues/23169))
+ - Added Unstoppable Domains support for Polygon. ([#20475](https://github.com/brave/brave-browser/issues/20475))
+ - Added Unstoppable Domains layer 2 support for resolving ETH address in Brave Wallet. ([#22146](https://github.com/brave/brave-browser/issues/22146))
+ - Added pre-loaded EVMs into Brave Wallet network selector (supported by 0x). ([#22888](https://github.com/brave/brave-browser/issues/22888))
+ - Added ability to "Hide Brave Rewards icon" by right clicking on the Brave Rewards (BAT) icon. ([#22525](https://github.com/brave/brave-browser/issues/22525))
+ - Retired the option of using DNS over HTTPS for Unstoppable Domains resolution now that layer 2 support has been added. ([#22149](https://github.com/brave/brave-browser/issues/22149))
+ - Changed Ethereum Dapp providers to only be available in secure contexts. ([#23407](https://github.com/brave/brave-browser/issues/23407))
+ - Changed Unstoppable Domains user opt-in interstitial from Cloudflare DoH to Ethereum option. ([#22148](https://github.com/brave/brave-browser/issues/22148))
+ - Updated buy flow for both Ramp and Wyre in Brave Wallet. ([#23349](https://github.com/brave/brave-browser/issues/23349))
+ - Updated QR sync code generator to include Brave icon when creating new QR sync codes. ([#22420](https://github.com/brave/brave-browser/issues/22420)) 
+ - Fixed not being able to validate Unstoppable Domains address in various panels in Brave Wallet. ([#22498](https://github.com/brave/brave-browser/issues/22498))
+ - Fixed issue where buying using Ramp didn't work in certain cases. ([#23425](https://github.com/brave/brave-browser/issues/23425))
+ - Fixed Ethereum Dapps dialogs being opened in inactive tabs. ([#23460](https://github.com/brave/brave-browser/issues/23460))
+ - Fixed selected network being used when resolving Unstoppable Domains/Ethereum Name Service to ETH address. ([#22151](https://github.com/brave/brave-browser/issues/22151))
+ - Fixed webcompat issues when "Brave Wallet" is set as the default cryptocurrency wallet via brave://settings/wallet. ([#23546](https://github.com/brave/brave-browser/issues/23546))
+ - Fixed Brave Wallet as default wallet can be bypassed by extensions. ([#22678](https://github.com/brave/brave-browser/issues/22678))
+ - Fixed issue where user required to press tab multiple times to navigate from the password field to the confirm password field via Brave Wallet. ([#22417](https://github.com/brave/brave-browser/issues/22417))
+ - Fixed fonts under https://feedly.com not being displayed correctly when shields are enabled due to font fingerprinting on macOS. ([#23489](https://github.com/brave/brave-browser/issues/23489))
+ - Fixed failed Brave Ads confirmations backing off if payment tokens are not created or ready. ([#23516](https://github.com/brave/brave-browser/issues/23516))
+ - Fixed adaptive CAPTCHA not remaining active/visible when rewards panel is closed before CAPTCHA has been resolved. ([#22417](https://github.com/brave/brave-browser/issues/22417))
+ - Fixed not being able to copy sync code from existing sync chain in certain cases. ([#23206](https://github.com/brave/brave-browser/issues/23206))
+ - Fixed issue when attempting to restore one-time sync codes on unsupported Brave versions. ([#23262](https://github.com/brave/brave-browser/issues/23262))
+ - Upgraded Chromium to 103.0.5060.53. ([#23482](https://github.com/brave/brave-browser/issues/23482)) ([Changelog for 103.0.5060.53](https://chromium.googlesource.com/chromium/src/+log/102.0.5005.115..103.0.5060.53?pretty=fuller&n=1000))
+
+## [1.39.122](https://github.com/brave/brave-browser/releases/tag/v1.39.122)
+
+ - Added Universal binaries for macOS. ([#23307](https://github.com/brave/brave-browser/issues/23307))
+ - Upgraded Chromium to 102.0.5005.115. ([#23372](https://github.com/brave/brave-browser/issues/23372)) ([Changelog for 102.0.5005.115](https://chromium.googlesource.com/chromium/src/+log/102.0.5005.99..102.0.5005.115?pretty=fuller&n=1000))
+
+## [1.39.120](https://github.com/brave/brave-browser/releases/tag/v1.39.120)
+
+ - Updated Wyre and Ramp asset lists for Brave Wallet. ([#23103](https://github.com/brave/brave-browser/issues/23103))
+ - Fixed Solana icon not being displayed in Brave Wallet when using buy functionality with Ramp. ([#23013](https://github.com/brave/brave-browser/issues/23013))
+ - Fixed Testnet tokens not being returned when switching networks with Brave Wallet. ([#23038](https://github.com/brave/brave-browser/issues/23038))
+ - Fixed issue where selected accounts become unselected on the Brave Wallet panel. ([#22999](https://github.com/brave/brave-browser/issues/22999))
+ - Fixed inability to reselect a native asset on the Brave Wallet "Visible Assets" modal. ([#22952](https://github.com/brave/brave-browser/issues/22952))
+ - Fixed errors during sync decryption which caused Brave Sync to fail in certain cases. ([#22898](https://github.com/brave/brave-browser/issues/22898))
+ - Fixed navigation to partitioned blobs. ([#23171](https://github.com/brave/brave-browser/issues/23171))
+ - Fixed certain cases where AMP pages would go into loading loop. ([#22610](https://github.com/brave/brave-browser/issues/22610))
+ - Upgraded Chromium to 102.0.5005.99. ([#23311](https://github.com/brave/brave-browser/issues/23311)) ([Changelog for 102.0.5005.99](https://chromium.googlesource.com/chromium/src/+log/102.0.5005.61..102.0.5005.99?pretty=fuller&n=1000))
+
 ## [1.39.111](https://github.com/brave/brave-browser/releases/tag/v1.39.111)
 
 - Added Solana support for account creation, sending SOL and sending SPL tokens with Brave Wallet. ([#22348](https://github.com/brave/brave-browser/issues/22348))

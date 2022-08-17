@@ -129,8 +129,8 @@ Follow the instructions for your platform:
 Once you have the prerequisites installed, you can get the code and initialize the build environment.
 
 ```bash
-git clone git@github.com:whisthq/brave-browser.git
-cd brave-browser
+git clone git@github.com:whisthq/brave-core.git path-to-your-project-folder/src/brave
+cd path-to-your-project-folder/src/brave
 npm install
 
 # By default, the `dev` branch of whisthq/brave-core and `whisthq/whist` will be built. To build

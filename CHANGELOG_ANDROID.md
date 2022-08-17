@@ -1,5 +1,67 @@
 # Changelog
 
+## [1.40.113](https://github.com/brave/brave-browser/releases/tag/v1.40.113)
+
+ - Upgraded Chromium to 103.0.5060.114. ([#23860](https://github.com/brave/brave-browser/issues/23860)) ([Changelog for 103.0.5060.114](https://chromium.googlesource.com/chromium/src/+log/103.0.5060.66..103.0.5060.114?pretty=fuller&n=1000))
+
+## [1.40.111](https://github.com/brave/brave-browser/releases/tag/v1.40.111)
+
+ - Upgraded Chromium to 103.0.5060.70. ([#23779](https://github.com/brave/brave-browser/issues/23779)) ([Changelog for 103.0.5060.70](https://chromium.googlesource.com/chromium/src/+log/103.0.5060.53..103.0.5060.70?pretty=fuller&n=1000))
+
+## [1.40.106](https://github.com/brave/brave-browser/releases/tag/v1.40.106)
+
+ - Fixed browser crash when app is brought into view from background with a pending action in Brave Wallet panel while notification badge is shown. ([#23604](https://github.com/brave/brave-browser/issues/23604))
+
+## [1.40.105](https://github.com/brave/brave-browser/releases/tag/v1.40.105)
+
+ - Added Dapps support for Brave Wallet. ([#23159](https://github.com/brave/brave-browser/issues/23159))
+ - Added support to list Non-Fungible Token (ERC721) in Brave Wallet. ([#19565](https://github.com/brave/brave-browser/issues/19565))
+ - Added pre-loaded EVMs into Brave Wallet network selector (supported by 0x). ([#22888](https://github.com/brave/brave-browser/issues/22888))
+ - Added ability to remove "Top Tiles" from the New Tab Page via the "New Tab Page" settings. ([#23118](https://github.com/brave/brave-browser/issues/23118))
+ - Retired the option of using DNS over HTTPS for Unstoppable Domains resolution now that layer 2 support has been added. ([#22149](https://github.com/brave/brave-browser/issues/22149))
+ - Changed Ethereum Dapp provider to only be available in secure contexts. ([#23407](https://github.com/brave/brave-browser/issues/23407))
+ - Changed Unstoppable Domains user opt-in interstitial from Cloudflare DoH to Ethereum option. ([#22148](https://github.com/brave/brave-browser/issues/22148))
+ - Removed "Beta" from Brave Wallet via the settings menu. ([#23238](https://github.com/brave/brave-browser/issues/23238))
+ - Updated QR sync code generator to include Brave icon when creating new QR sync codes. ([#22420](https://github.com/brave/brave-browser/issues/22420)) 
+ - Fixed Ethereum Dapps dialog being opened in inactive tabs. ([#23460](https://github.com/brave/brave-browser/issues/23460))
+ - Fixed selected network being used when resolving Unstoppable Domains/Ethereum Name Service to ETH address. ([#22151](https://github.com/brave/brave-browser/issues/22151))
+ - Fixed crash when selecting "VPN Support" under the "Brave Firewall + VPN" settings in certain cases. ([#23492](https://github.com/brave/brave-browser/issues/23492))
+ - Fixed not being able to copy sync code from existing sync chain in certain cases. ([#23206](https://github.com/brave/brave-browser/issues/23206))
+ - Fixed issue where setting Brave as the default browser using the onboarding screen didn't work in certain cases. ([#22766](https://github.com/brave/brave-browser/issues/22766))
+ - Upgraded Chromium to 103.0.5060.53. ([#23482](https://github.com/brave/brave-browser/issues/23482)) ([Changelog for 103.0.5060.53](https://chromium.googlesource.com/chromium/src/+log/102.0.5005.115..103.0.5060.53?pretty=fuller&n=1000))
+
+## [1.39.123](https://github.com/brave/brave-browser/releases/tag/v1.39.123)
+
+ - Fixed certain cases where AMP pages would get into a redirect loop. ([#23320](https://github.com/brave/brave-browser/issues/23320))
+ - Upgraded Chromium to 102.0.5005.125. ([#23444](https://github.com/brave/brave-browser/issues/23444)) ([Changelog for 102.0.5005.125](https://chromium.googlesource.com/chromium/src/+log/102.0.5005.99..102.0.5005.125?pretty=fuller&n=1000))
+
+## [1.39.120](https://github.com/brave/brave-browser/releases/tag/v1.39.120)
+
+ - Changed position of VPN toggle under settings menu. ([#23240](https://github.com/brave/brave-browser/issues/23240))
+ - Fixed browser crash when device attempts connecting to Google Play Store after losing network connectivity in certain cases. ([#23177](https://github.com/brave/brave-browser/issues/23177))
+ - Fixed subscription status under Brave Firewall + VPN settings not specifying if it's a trial, monthly or yearly subscription. ([#23004](https://github.com/brave/brave-browser/issues/23004))
+ - Fixed errors during sync decryption which caused Brave Sync to fail in certain cases. ([#22898](https://github.com/brave/brave-browser/issues/22898))
+ - Fixed certain cases where AMP pages would go into loading loop. ([#22610](https://github.com/brave/brave-browser/issues/22610))
+ - Upgraded Chromium to 102.0.5005.99. ([#23311](https://github.com/brave/brave-browser/issues/23311)) ([Changelog for 102.0.5005.99](https://chromium.googlesource.com/chromium/src/+log/102.0.5005.78..102.0.5005.99?pretty=fuller&n=1000))
+
+## [1.39.115](https://github.com/brave/brave-browser/releases/tag/v1.39.115)
+
+ - Disabled Brave Firewall + VPN on both Android 6 and Android 7 due to several crashes. ([#23063](https://github.com/brave/brave-browser/issues/23063)) & ([#23089](https://github.com/brave/brave-browser/issues/23089))
+ - Fixed cookies being cleared/removed when upgrading from Chromium 101 to Chromium 102. ([#23109](https://github.com/brave/brave-browser/issues/23109))
+ - Upgraded Chromium to 102.0.5005.78. ([#23131](https://github.com/brave/brave-browser/issues/23131)) ([Changelog for 102.0.5005.78](https://chromium.googlesource.com/chromium/src/+log/102.0.5005.61..102.0.5005.78?pretty=fuller&n=1000))
+
+## [1.39.111](https://github.com/brave/brave-browser/releases/tag/v1.39.111)
+
+ - Added Brave Firewall + VPN. ([#12197](https://github.com/brave/brave-browser/issues/12197))
+ - Added support for blob partitioning. ([#21746](https://github.com/brave/brave-browser/issues/21746))
+ - Implemented eth_getEncryptionPublicKey for Brave Wallet. ([#19276](https://github.com/brave/brave-browser/issues/19276))
+ - Reduced adblock filter memory usage by optimizing unused regex rules. ([#21970](https://github.com/brave/brave-browser/issues/21970))
+ - Removed known Dialog Insight user tracking parameters from URLs. ([#22082](https://github.com/brave/brave-browser/issues/22082))
+ - Fixed breakage in webpack build caused by OpenSSL 3.0. ([#22305](https://github.com/brave/brave-browser/issues/22305))
+ - Fixed pending bell icon under Brave Wallet not being displayed when new unapproved requests are created. ([#21654](https://github.com/brave/brave-browser/issues/21654))
+ - Fixed expand icon under Brave Shields using incorrect color when the Privacy Hub has been enabled. ([#22049](https://github.com/brave/brave-browser/issues/22049))
+ - Upgraded Chromium to 102.0.5005.61. ([#22923](https://github.com/brave/brave-browser/issues/22923)) ([Changelog for 102.0.5005.61](https://chromium.googlesource.com/chromium/src/+log/101.0.4951.67..102.0.5005.61?pretty=fuller&n=1000))
+
 ## [1.38.119](https://github.com/brave/brave-browser/releases/tag/v1.38.119)
 
 - Added Brave News opt-in card via the New Tab Page. ([#22778](https://github.com/brave/brave-browser/issues/22778))

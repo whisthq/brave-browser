@@ -1,6 +1,6 @@
 # Whist README
 
-This repository is Whist's fork of `brave-browser`, with a few modifications. We forked `brave-browser` so that we could build Whist integrated within Chromium on top of Brave, to benefit from Brave's features and development pipeline.
+This repository is Whist's fork of [`brave-browser`](https://github.com/brave/brave-browser), with a few modifications. We forked [`brave-browser`](https://github.com/brave/brave-browser) so that we could build Whist integrated within Chromium on top of Brave, to benefit from Brave's features and development pipeline.
 
 ## Development
 
@@ -28,7 +28,7 @@ git remote set-url --push upstream DISABLE
 
 After this, you should be able to list your remotes with `git remote -v` if you ever need to debug.
 
-Since Brave Browser is a large and active project, we will very often want to work with the latest upstream code; meanwhile, we need to make sure that our own repository has a sane commit history -- we cannot simply periodically merge the latest Brave Browser on top of our own modifications.
+Since Brave is a large and active project, we will very often want to work with the latest upstream code; meanwhile, we need to make sure that our own repository has a sane commit history -- we cannot simply periodically merge the latest Brave Browser on top of our own modifications.
 
 Instead, perform the following steps to incorporate changes from upstream:
 
@@ -53,11 +53,11 @@ git push origin <current branch>
 
 ## Building
 
-Note that building Whist's Brave also builds the Whist protocol, meaning you also need the dependencies for building it on your system (like Cmake, etc.). Pleaser refer to [whisthq/whist](https://github.com/whisthq/whist) as needed. To build Brave, you need:
+Note that building Whist's Brave also builds the Whist protocol, meaning you also need the dependencies for building it on your system (Cmake, etc.). Pleaser refer to [`whisthq/whist`](https://github.com/whisthq/whist) as needed. To build Brave, you need:
 
 - A NodeJS LTS version. As of writing, this is NodeJS 16.x. Note that some build commands might still work if you don't have that version, and things will fail later on with cryptic errors, so it is better to make sure you are on the right version at the start. We recommend that you install Node Version Manager via your system's package manager (Brew, Apt, Chocolatey/Winget) to easily manage your NodeJS versions. You can then install a specific version of NodeJS, here `nvm install 16`, and switch to it via `nvm use 16` or `nvm use 16.16.0`. You *need* to use NPM 8.5.5 to build on macOS, Windows and/or Linux, via `npm install -g npm@8.5.5`.
 
-- If you are building on macOS, you also need to have Xcode fully installed (the application, the CLI tools, and Rosetta, if you are on arm64). You can install the application from the macOS App Store, and you can install the CLI tools via `xcode-select --install` in your terminal, once you have the Xcode application. You then need to launch Xcode to trigger the Rosetta install. Note that this will require >18GB of available storage. Please ensure Xcode is on the latest version before building, noting that updating Xcode will restart the entire build process.
+- If you are building on macOS, you also need to have Xcode fully installed (the application, the CLI tools, and Rosetta if you are on `arm64`). You can install the application from the macOS App Store, and you can install the CLI tools via `xcode-select --install` in your terminal, once you have the Xcode application. You then need to launch Xcode to trigger the Rosetta install. Note that this will require >18GB of available storage. Please ensure Xcode is on the latest version before building, as updating Xcode will restart the entire build process.
 
 - If you are building on Windows, please follow the below instructions:
   - Install [Visual Studio Community 2019-2022](https://visualstudio.microsoft.com/vs/community/), including Universal Windows Platform development and Desktop development with C++. Try to not install NodeJS, or if you do, ensure that it doesn't conflict with the nvm-installed NodeJS as described above to ensure that you're on the right version.
@@ -73,7 +73,7 @@ Once you're ready, simply follow the instructions from the [Build Brave](#build-
 
 ## Publishing
 
-This project gets published nightly for our `dev` environment, and for every push on our `staging` and `prod` environments, from the `whist-build-and-deploy.yml` workflow within [`whisthq/whist`](https://github.com/whisthq/whist).
+This project gets published nightly for our `dev` environment, and for every push on our `staging` and `prod` environments, from the [`whist-build-and-deploy.yml`](https://github.com/whisthq/whist/blob/dev/.github/workflows/whist-build-and-deploy.yml) workflow within [`whisthq/whist`](https://github.com/whisthq/whist).
 
 ---
 

@@ -40,7 +40,7 @@ Log.progress(`...brave-core is now at commit ID ${braveCoreSha}`)
 
 Log.progress('Performing initial checkout of whist')
 
-const whistCoreDir = path.resolve(__dirname, '..', 'src', 'brave', 'whist')
+const whistCoreDir = path.resolve(__dirname, '..', 'src', 'whist')
 const whistCoreRef = util.getProjectVersion('whist')
 
 if (!fs.existsSync(whistCoreDir) || !fs.existsSync(path.join(whistCoreDir, '.git'))) {

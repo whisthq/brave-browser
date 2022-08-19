@@ -23,7 +23,7 @@ src
 # gclient
 .cipd
 .gclient_entries
-.gclient
+.gclient*
 .sccache
 
 # logs and test results

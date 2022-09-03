@@ -67,6 +67,8 @@ Note that building Whist's Brave also builds the Whist protocol, meaning you als
   - Install the Windows dependencies of [Whist Protocol](https://github.com/whisthq/whist/tree/dev/protocol) as well, namely `cmake`, and configure `awscli`.
   - Note that will you have to use `x86_64 Visual Studio Developer Command Prompt` (which may be named `x64 Visual Studio Developer Command Prompt`), in order to compile Whist, which happens at the end of the `npm run build` step.
 
+- If you are building on Linux, firsst run `sudo apt-get install -y pkg-config build-essential`, and then run `./src/build/install-build-deps.sh`.
+
 - Lastly, building Brave requires ~100GB of available storage for a Component or Debug build, and ~150GB for a Release build. We recommend that you have at least 120GB of available storage on your device before starting to work on Brave/Chromium to avoid any issues.
 
 Once you're ready, simply follow the instructions from the [Build Brave](#build-brave) section below!
